@@ -38,7 +38,8 @@ class Map extends React.Component {
             width: this.DEFAULT_WIDTH,
             height: this.DEFAULT_HEIGHT,
             condition: item.condition,
-            parentId: item.parentId
+            parentId: item.parentId,
+            runAnimation:false
         }
     }
 
@@ -77,7 +78,9 @@ class Map extends React.Component {
         const zoom = this.state.zoom / this.ZOOM_FACTOR;
         this.setState({ zoom });
     };
-
+    onAnimate = (flag) => {
+        this.setState({ runAnimation: true })
+    }
     setSelected = (id) => {
         const item = repository.getItem(id);
         this.setState({
@@ -275,7 +278,10 @@ class Map extends React.Component {
                 onClick={this.setSelected}
                 list={this.state.list}
                 displayShape={this.state.displayShape}
-                condition={this.state.condition} />
+                condition={this.state.condition} 
+                runAnimation={this.state.runAnimation}
+                onAnimate={this.onAnimate}
+                 />
         }
         return (
             <>

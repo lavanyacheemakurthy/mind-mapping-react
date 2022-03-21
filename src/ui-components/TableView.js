@@ -17,6 +17,7 @@ function TableView(props) {
                     </tr>
                 </thead>
                 <tbody>
+                    {console.log("Nodes list : " ,JSON.stringify(props.list))}
                     {props.list.map((item, index) => (
                         <tr key={item.id}
                         onClick={() => props.onClick(item.id)}
