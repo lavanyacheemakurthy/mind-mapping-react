@@ -3,15 +3,13 @@ import ChartElement from "./ChartElement";
 import Connection from "./Connection";
 import Toolbar from "./Toolbar";
 
-/**
-* Implementation of Breadth-First-Search (BFS) using adjacency matrix.
-* This returns nothing (yet), it is meant to be a template for whatever you want to do with it,
-* e.g. finding the shortest path in a unweighted graph.
-* This has a runtime of O(|V|^2) (|V| = number of Nodes), for a faster implementation see @see ../fast/BFS.java (using adjacency Lists)
+/** https://www.algorithms-and-technologies.com/bfs/javascript
+* Implementation of Breadth-First-Search (BFS)
+* This has a runtime of O(|V|^2) (|V| = number of Nodes)
 *
-* @param graph an adjacency-matrix-representation of the graph where (x,y) is true if the the there is an edge between nodes x and y.
-* @param start the node to start from.
-* @return Array array containing the shortest distances from the given start node to each other node
+* @param data an list of JSON objects,each object corresponds to one node in UI  
+* @param start the node to start BFS from.
+* @return Array array of input having list of JSON objects which one more property delay added in each node object
 */
 function getDelays(data, start) {
     //A Queue to manage the nodes that have yet to be visited
