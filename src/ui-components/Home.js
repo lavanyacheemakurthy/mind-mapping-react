@@ -4,6 +4,7 @@ import Toolbar from "./Toolbar";
 import css from "./home.module.css";
 import Card from "./Card";
 import router from "./router";
+import { SHAPES } from "./Map";
 
 class Home extends React.Component {
     constructor(props) {
@@ -17,7 +18,8 @@ class Home extends React.Component {
         repository.save({
             name: 'Bright Idea!',
             level: 0,
-            parentId: null
+            parentId: null,
+            displayShape:SHAPES.BIG_CIRCLE
         });
         this.setState({list: repository.getList({level: 0})});
     }

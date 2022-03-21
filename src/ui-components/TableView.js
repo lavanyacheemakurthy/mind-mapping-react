@@ -11,6 +11,9 @@ function TableView(props) {
                         <th>Level</th>
                         <th>RootId</th>
                         <th>ParentId</th>
+                       
+                        <th>Display Shape</th>
+                        <th>Condition</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,6 +26,8 @@ function TableView(props) {
                             <td>{item.level}</td>
                             <td>{item.rootId}</td>
                             <td>{item.parentId}</td>
+                            <td>{item.displayShape}</td>
+                            <td>{item.condition}</td>
                         </tr>
                     ))}
                 </tbody>

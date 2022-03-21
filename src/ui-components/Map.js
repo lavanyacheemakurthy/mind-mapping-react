@@ -7,12 +7,12 @@ import Toolbar from "./Toolbar";
 import TableView from "./TableView";
 import Chart from "./Chart";
 
-export const SHAPES={
-    BIG_CIRCLE:'BIG_CIRCLE',
-    RECTANGLE:'RECTANGLE',
-    RHOMBUS:'RHOMBUS',
-    NODE:'NODE',
-    ARROW:'ARROW'
+export const SHAPES = {
+    BIG_CIRCLE: 'BIG_CIRCLE',
+    RECTANGLE: 'RECTANGLE',
+    RHOMBUS: 'RHOMBUS',
+    NODE: 'NODE',
+    ARROW: 'ARROW'
 }
 class Map extends React.Component {
     DEFAULT_WIDTH = 400;
@@ -22,13 +22,13 @@ class Map extends React.Component {
         this.wrapper = React.createRef();
         const rootId = Number(router.getParams());
         const list = repository.getList({ rootId });
-        const item = list[0];
+        const item = list[0]
         this.state = {
             id: item.id,
             name: item.name,
             level: item.level,
             comment: item.comment,
-            displayShape:item.displayShape,
+            displayShape: item.displayShape,
             rootId,
             list,
             zoom: 1,
@@ -36,14 +36,16 @@ class Map extends React.Component {
             x: 0,
             y: 0,
             width: this.DEFAULT_WIDTH,
-            height: this.DEFAULT_HEIGHT
+            height: this.DEFAULT_HEIGHT,
+            condition: item.condition,
+            parentId: item.parentId
         }
     }
 
     onResize = () => {
         const width = this.wrapper.current.clientWidth;
         const height = this.wrapper.current.clientHeight;
-        this.setState({width, height});
+        this.setState({ width, height });
     };
 
     componentDidMount() {
@@ -57,7 +59,7 @@ class Map extends React.Component {
 
     toggleMoveMode = () => {
         const moveMode = !this.state.moveMode;
-        this.setState({moveMode});
+        this.setState({ moveMode });
     };
 
     ZOOM_FACTOR = 1.1;
@@ -66,14 +68,14 @@ class Map extends React.Component {
         e.stopPropagation();
         e.preventDefault();
         const zoom = this.state.zoom * this.ZOOM_FACTOR;
-        this.setState({zoom});
+        this.setState({ zoom });
     };
 
     zoomOut = (e) => {
         e.stopPropagation();
         e.preventDefault();
         const zoom = this.state.zoom / this.ZOOM_FACTOR;
-        this.setState({zoom});
+        this.setState({ zoom });
     };
 
     setSelected = (id) => {
@@ -83,7 +85,8 @@ class Map extends React.Component {
             level: item.level,
             name: item.name,
             comment: item.comment,
-            displayShape:item.displayShape
+            displayShape: item.displayShape,
+            condition: item.condition
         });
     };
 
@@ -94,17 +97,48 @@ class Map extends React.Component {
         const list = repository.getList({ rootId: this.state.rootId });
         this.setState({ name, list });
     }
+    changeShape = (e) => {
+        const displayShape = e.target.value;
+        const item = { id: this.state.id, displayShape };
+        repository.save(item);
+        const list = repository.getList({ rootId: this.state.rootId });
+        this.setState({ displayShape, list });
+    }
+    invertConditionalFlows = () => {
+        const childrenForRhombus = repository.getList({ parentId: this.state.id });
+        if (childrenForRhombus && childrenForRhombus[0] && childrenForRhombus[0].condition) {
+            if (childrenForRhombus[0].condition === 'TRUE') {
+                const item = { id: childrenForRhombus[0].id, condition: 'FALSE' };
+                repository.save(item);
+            } else if (childrenForRhombus[0].condition === 'FALSE') {
+                const item = { id: childrenForRhombus[0].id, condition: 'TRUE' };
+                repository.save(item);
+            }
 
-    setSelected = (id) => {
-        const item = repository.getItem(id);
-        this.setState({
-            id: item.id,
-            name: item.name,
-            level: item.level,
-            comment: item.comment,
-            displayShape:item.displayShape,
-        });
-    };
+        }
+        if (childrenForRhombus && childrenForRhombus[1] && childrenForRhombus[1].condition) {
+            if (childrenForRhombus[0].condition === 'TRUE') {
+                const item = { id: childrenForRhombus[1].id, condition: 'FALSE' };
+                repository.save(item);
+            } else if (childrenForRhombus[0].condition === 'FALSE') {
+                const item = { id: childrenForRhombus[1].id, condition: 'TRUE' };
+                repository.save(item);
+            }
+
+        }
+        console.log(childrenForRhombus)
+    }
+    // setSelected = (id) => {
+    //     const item = repository.getItem(id);
+    //     this.setState({
+    //         id: item.id,
+    //         name: item.name,
+    //         level: item.level,
+    //         comment: item.comment,
+    //         displayShape: item.displayShape,
+    //         condition: item.condition
+    //     });
+    // };
 
     changeComment = (e) => {
         const comment = e.target.value;
@@ -117,22 +151,25 @@ class Map extends React.Component {
         { name: 'add', onClick: () => this.add() },
         { name: 'delete', onClick: () => this.delete() }
     ];
-
-    add() {
-        const detemineShape=(level)=>{
-           return level===1 && SHAPES.BIG_CIRCLE;
-           return level===2 && SHAPES.RHOMBUS;
-           return level===3 && SHAPES.RECTANGLE;
-           return SHAPES.NODE
-
-         }
+    determineDefaultDisplayShape(level) {
+        if (level === 1) {
+            return SHAPES.RHOMBUS;
+        } else if (level === 2) {
+            return SHAPES.RECTANGLE;
+        } else if (level === 3) {
+            return SHAPES.NODE;
+        }
+        return SHAPES.NODE
+    }
+    addNewElementAndSetState(condition) {
         const item = repository.save({
             name: 'New item',
             level: this.state.level + 1,
             rootId: this.state.rootId,
             parentId: this.state.id,
             comment: '',
-            displayShape :detemineShape(this.state.level+1)
+            displayShape: this.determineDefaultDisplayShape(this.state.level + 1),
+            condition: condition ? condition : null
         });
         const list = repository.getList({ rootId: this.state.rootId });
         this.setState({
@@ -140,9 +177,29 @@ class Map extends React.Component {
             name: item.name,
             level: item.level,
             comment: item.comment,
-            displayShape:item.displayShape,
-            list
+            displayShape: item.displayShape,
+            list,
+            condition,
+            parentId: item.parentId
         });
+    }
+    add() {
+        // const {addNewElementAndSetState}=this;
+        if (this.state.displayShape === SHAPES.RHOMBUS) {
+            const childern = repository.getList({ parentId: this.state.id });
+            if (!childern || childern.length === 0) {
+                this.addNewElementAndSetState("TRUE")
+            } else if ((childern && childern.length === 1)) {
+                if (childern[0].condition === "TRUE") {
+                    this.addNewElementAndSetState("FALSE")
+                } else {
+                    this.addNewElementAndSetState("TRUE")
+                }
+            }
+        } else {
+            this.addNewElementAndSetState(null);
+
+        }
     }
 
     onMouseDown = (e) => {
@@ -161,7 +218,7 @@ class Map extends React.Component {
         e.preventDefault();
         const x = (this.startX - e.clientX) * this.state.zoom;
         const y = (this.startY - e.clientY) * this.state.zoom;
-        this.setState({x, y});
+        this.setState({ x, y });
     };
 
     onMouseUp = () => {
@@ -181,8 +238,9 @@ class Map extends React.Component {
             name: item.id,
             level: item.level,
             comment: item.comment,
-            displayShape:item.displayShape,
-            list
+            displayShape: item.displayShape,
+            list,
+            condition: item.condition
         });
     };
 
@@ -197,7 +255,9 @@ class Map extends React.Component {
             view = <TableView
                 id={this.state.id}
                 onClick={this.setSelected}
-                list={this.state.list} />
+                list={this.state.list}
+                displayShape={this.state.displayShape}
+                condition={this.state.condition} />
         } else {
             view = <Chart
                 id={this.state.id}
@@ -213,7 +273,9 @@ class Map extends React.Component {
                 onMouseMove={this.onMouseMove}
                 onMouseUp={this.onMouseUp}
                 onClick={this.setSelected}
-                list={this.state.list} />
+                list={this.state.list}
+                displayShape={this.state.displayShape}
+                condition={this.state.condition} />
         }
         return (
             <>
@@ -231,9 +293,12 @@ class Map extends React.Component {
                     level={this.state.level}
                     displayShape={this.state.displayShape}
                     name={this.state.name}
+                    condition={this.state.condition}
                     onChangeName={this.changeName}
+                    onChangeShape={this.changeShape}
                     onChangeComment={this.changeComment}
-                    comment={this.state.comment} />
+                    comment={this.state.comment}
+                    invertConditionalFlows={this.invertConditionalFlows} />
             </>
         );
     }

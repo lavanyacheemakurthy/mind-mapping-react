@@ -1,7 +1,6 @@
 import css from "./chart.module.css";
 import ChartElement from "./ChartElement";
 import Connection from "./Connection";
-import { SHAPES } from "./Map";
 import Toolbar from "./Toolbar";
 
 function Chart(props) {
@@ -25,7 +24,9 @@ function Chart(props) {
                 px: parent.x,
                 py: parent.y,
                 isLeftSide,
-                displayShape:item.displayShape
+                displayShape: item.displayShape,
+                condition: item.condition,
+                parent: parent
             };
             elements.push(element);
             getChildren(list, element, elements, dPhi / children.length);
@@ -44,7 +45,7 @@ function Chart(props) {
             x: x0,
             y: y0,
             phi: 0,
-            displayShape:SHAPES.BIG_CIRCLE
+            displayShape: root.displayShape
         };
         elements.push(rootElement);
         getChildren(list, rootElement, elements, 2.5 * Math.PI);
@@ -62,25 +63,29 @@ function Chart(props) {
         <div className={css.container}>
             <Toolbar list={zoomMenu} type="default" location={['horisontal', 'right', 'top']} />
             <svg viewBox={`${props.x} ${props.y} ${WIDTH} ${HEIGHT}`}
-            onMouseDown={(e) => props.onMouseDown(e)}
-            onMouseMove={(e) => props.onMouseMove(e)}
-            onMouseUp={() => props.onMouseUp()}>
+                onMouseDown={(e) => props.onMouseDown(e)}
+                onMouseMove={(e) => props.onMouseMove(e)}
+                onMouseUp={() => props.onMouseUp()}>
                 <Connection list={elements} />
                 {
-                    elements.map(element =>
-                    (
-                        <ChartElement
-                            key={element.id}
-                            onClick={props.onClick}
-                            id={element.id}
-                            phi={element.phi}
-                            level={element.level}
-                            x={element.x} y={element.y}
-                            isSelected={element.id === props.id}
-                            px={element.px} py={element.py}
-                            name={element.name}
-                            displayShape={element.displayShape} />
-                    ))
+                    elements.map(element => {
+                        return ((
+                            <ChartElement
+                                key={element.id}
+                                onClick={props.onClick}
+                                id={element.id}
+                                phi={element.phi}
+                                level={element.level}
+                                x={element.x} y={element.y}
+                                isSelected={element.id === props.id}
+                                px={element.px} py={element.py}
+                                name={element.name}
+                                displayShape={element.displayShape}
+                                condition={element.condition}
+                                parent={element.parent} />
+                        ))
+                    }
+                    )
                 }
             </svg>
         </div>

@@ -16,7 +16,8 @@
 }
 
 .selected {
-    background: #1b5e20;
+    background: content-box conic-gradient(rgb(245, 125, 235), rgb(126, 138, 245));
+    /* background: content-box conic-gradient(rgb(245, 125, 235), rgb(126, 138, 245)); */
     color: white;
 }
 

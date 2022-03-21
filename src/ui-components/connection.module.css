@@ -1,5 +1,16 @@
 .connection {
-    fill: none;
-    stroke: #1b5e20;
-    stroke-width: 1px;
+  fill: none;
+  /* stroke: #1b5e20; */
+  stroke: rgb(2, 27, 252);
+  stroke-width: 1px;
+}
+.connection_condition_true {
+  fill: none;
+  stroke: rgb(4, 248, 4);
+  stroke-width: 1px;
+}
+.connection_condition_false {
+  fill: none;
+  stroke: red;
+  stroke-width: 1px;
 }
