@@ -2,7 +2,7 @@
     position: absolute;
     right: 0;
     top: 0;
-    width: 200px;
+    width: 250px;
     bottom: 0;
     padding: 10px;
     box-sizing: border-box;
@@ -33,4 +33,7 @@ fieldset {
 label {
     font-size: 10px;
     opacity: 0.5;
+}
+.inputs_div{
+    font-size: 10px;
 }

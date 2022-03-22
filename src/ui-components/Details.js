@@ -1,4 +1,5 @@
 import css from "./details.module.css";
+import Inputs from "./Inputs";
 import { SHAPES } from "./Map";
 
 function Details(props) {
@@ -42,9 +43,14 @@ function Details(props) {
                         })}
                     </select>
                     {props.displayShape === SHAPES.RHOMBUS && <div>
-                        <input type='button' name='Invert YES and NO flows' value='Invert YES and NO flows' onClick={props.invertConditionalFlows}/>
+                        <input type='button' name='Invert YES and NO flows' value='Invert YES and NO flows' onClick={props.invertConditionalFlows} />
                     </div>}
                 </fieldset>
+                {props.displayShape === SHAPES.ARROW &&
+                    <fieldset>
+                        <label for="shape">Select Inputs</label>
+                        <Inputs className={css.inputs_div} data={[{key:'name',value:'lavanya'},{key:'name',value:'lavanya'}]}/>
+                    </fieldset>}
             </form>
         </div>
     );
