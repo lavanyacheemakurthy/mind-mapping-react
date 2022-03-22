@@ -21,12 +21,7 @@ function Details(props) {
                         onChange={props.onChangeName}
                         value={props.name} type="text" />
                 </fieldset>
-                <fieldset>
-                    <label>Comment</label>
-                    <textarea rows="10"
-                        onChange={props.onChangeComment}
-                        value={props.comment} className={css.textarea}></textarea>
-                </fieldset>
+                
                 {props.condition && <fieldset>
                     <label>Condition</label>
                     <input className={css.input} value={props.condition} disabled type="text" />
@@ -51,6 +46,12 @@ function Details(props) {
                         <label for="shape">Select Inputs</label>
                         <Inputs className={css.inputs_div} data={[{key:'name',value:'lavanya'},{key:'name',value:'lavanya'}]}/>
                     </fieldset>}
+                    <fieldset>
+                    <label>Comments</label>
+                    <textarea rows="5"
+                        onChange={props.onChangeComment}
+                        value={props.comment} className={css.textarea}></textarea>
+                </fieldset>
             </form>
         </div>
     );
