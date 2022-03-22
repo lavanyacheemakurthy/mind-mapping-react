@@ -4,7 +4,7 @@ import Connection from "./Connection";
 import Toolbar from "./Toolbar";
 
 /** https://www.algorithms-and-technologies.com/bfs/javascript
-* Implementation of Breadth-First-Search (BFS)
+* Implementation of Breadth-First-Search (BFS) in getDelays
 * This has a runtime of O(|V|^2) (|V| = number of Nodes)
 *
 * @param data an list of JSON objects,each object corresponds to one node in UI  
@@ -25,6 +25,8 @@ function getDelays(data, start) {
     //(the distance to the start node is 0)
     distances[`${start.id}`] = 0;
     //While there are nodes left to visit...
+    let delaysL = {};
+    delaysL[`${start.id}`] = 0;
     while (queue.length > 0) {
         console.log("Visited nodes: " + visited);
         console.log("Distances: " + distances);
@@ -32,34 +34,40 @@ function getDelays(data, start) {
         console.log("Removing node " + node + " from the queue...");
         //...for all neighboring nodes that haven't been visited yet....
         let neighbourNodes = data.filter(x => x.parent && x.parent.id === node.id);
-        neighbourNodes.map(iteratingNode => {
+        neighbourNodes.map((iteratingNode, iteratingIndex) => {
             if (Object.keys(visited).indexOf(iteratingNode.id) === -1) {
                 visited[`${iteratingNode.id}`] = true;
                 distances[`${iteratingNode.id}`] = distances[`${node.id}`] + 1;
+                // Find max delay among available delays and increment delay
+                let nodesDelay = Math.max(...Object.values(delaysL)) + 500;
+                // preserve current delay so that this can be considered while finding max.
+                delaysL[`${iteratingNode.id}`] = nodesDelay;
+                // Assigning calculated delay into array item. 
+                iteratingNode.delay = nodesDelay;
+                // This way of havin seperate delaysL array, will allow nodes to blink one after other if n nodes are at same level from a parent
                 queue.push(iteratingNode)
             }
         })
-        // for (var i = 1; i < neighbourNodes.length; i++) {
-        //     if (graph[node][i] && !visited[i]) {
-        //         // Do whatever you want to do with the node here.
-        //         // Visit it, set the distance and add it to the queue
-        //         visited[i] = true;
-        //         distances[i] = distances[node] + 1;
-        //         queue.push(i);
-        //         console.log("Visiting node " + i + ", setting its distance to " + distances[i] + " and adding it to the queue");
-
-        //     }
-        // }
     }
     console.log("No more nodes in the queue. Distances: " + distances);
     let toReturnData = data.map(x => {
-        let distance = distances[`${x.id}`];
-        x.delay = distance ? distance * 100 : 0;
-        return x;
+        // Making all nodes at one level blink once rather one after other - start
+        // let distance = distances[`${x.id}`];
+        // x.delay = distance ? distance * 100 : 0;
+        // Making all nodes at one level blink once rather one after other - end
+        return { ...x }
     });
-    console.log("Data with delays : ",toReturnData);
+
+    console.log("Data with delays : ", toReturnData);
+
     return toReturnData;
 
+}
+function removeDelays(elements) {
+    return elements.map(x => {
+        delete x.delay;
+        return x;
+    })
 }
 function Chart(props) {
     const WIDTH = props.width / props.zoom;
@@ -114,12 +122,14 @@ function Chart(props) {
         { name: 'zoomIn', onClick: (e) => props.onZoomIn(e) },
         { name: 'zoomOut', onClick: (e) => props.onZoomOut(e) },
         { name: 'panTool', onClick: props.onToggleMoveMode },
-        { name: 'play', onClick: (e) => props.onAnimate(true) }
+        { name: props.runAnimation ? 'stop':'play', onClick: (e) => props.onAnimate() }
     ];
 
     let elements = setElements(props.list);
     if (props.runAnimation) {
         elements = getDelays(elements, elements[0]);
+    } else {
+        elements = removeDelays(elements)
     }
     return (
         <div className={css.container}>
@@ -145,7 +155,8 @@ function Chart(props) {
                                 displayShape={element.displayShape}
                                 condition={element.condition}
                                 parent={element.parent}
-                                delay={element.delay} />
+                                delay={element.delay}
+                                runAnimation={props.runAnimation} />
                         ))
                     }
                     )

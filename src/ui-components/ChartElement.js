@@ -80,38 +80,44 @@ function ChartElement(props) {
         textAlignment = css.middle;
     }
     let className = css.container;
+
+    if (props.runAnimation) {
+        className += ' ' + css.play_mode;
+    }
     if (props.isSelected) {
         className += ' ' + css.selected;
     }
-    const root = <circle className={className} cx={props.x} cy={props.y} r={`${BIG_CIRCLE_RADIUS}`} fill="none" stroke="black" />;
-    let rect = <rect className={className}
+    const root = <circle className={className} style={props.runAnimation ?  { animationDelay: `${props.delay}ms` } : {}} cx={props.x} cy={props.y} r={`${BIG_CIRCLE_RADIUS}`} fill="none" stroke="black" />;
+    let rect = <rect className={className} style={props.runAnimation ?  { animationDelay: `${props.delay}ms` } : {}}
         rx="3" ry="3"
         x={x} y={props.y - HEIGHT / 2}
         width={WIDTH} height={HEIGHT} fill="none" stroke="black" />;
-    let rhombus = <polygon className={className} points={`${props.x},  ${props.y - RHOMBUS_HALF_DIAMETER}
+    let rhombus = <polygon className={className} style={props.runAnimation ?  { animationDelay: `${props.delay}ms` } : {}} points={`${props.x},  ${props.y - RHOMBUS_HALF_DIAMETER}
      ${props.x + RHOMBUS_HALF_DIAMETER},  ${props.y} 
         ${props.x},${props.y + RHOMBUS_HALF_DIAMETER} 
         ${props.x - RHOMBUS_HALF_DIAMETER},${props.y}  
         ${props.x},  ${props.y - RHOMBUS_HALF_DIAMETER}`}
         fill="none" stroke="black"
     />
-    const node = <circle cx={props.x} cy={props.y} r="3" className={className} />
-    // let arrow =<>
-    // <line className={""} x1={`${props.x}`}  y1={`${props.y}`}
-    // x2={`${props.x - ARROW_LINE_LENGTH}`}  y2={`${props.y - ARROW_LINE_LENGTH}`} stroke={'black'}  strokeWidth={2}/>
-    // <line className={""} x1={`${props.x}`}  y1={`${props.y}`}
-    // x2={`${props.x - ARROW_LINE_LENGTH}`}  y2={`${props.y + ARROW_LINE_LENGTH}`} />
-    // </>
-    // let arrow = <><polygon points="2,7 0,0 11,7 0,14" transform="translate(100 100) rotate(45 0 0) translate(-2 -7)" stroke="red" fill="red" />
-    //     <line x1="0" y1="0" x2="100" y2="100" stroke="green" /></>
+    const node = <circle cx={props.x} cy={props.y} r="3" className={className} style={props.runAnimation ?  { animationDelay: `${props.delay}ms` } : {}} />
     let { parent: { x: parentX, y: parentY } = {} } = props;
     let { x: currentX, y: currentY } = props;
     console.log("Parents X and Y ", parentX, parentY);
     console.log("Current X and Y ", currentX, currentY);
-    let arrow = <polygon className={className}
-        points={`${props.x},${props.y} ${props.x - ARROW_LINE_LENGTH},${props.y - ARROW_LINE_LENGTH} ${props.x},${props.y} ${props.x - ARROW_LINE_LENGTH},${props.y + ARROW_LINE_LENGTH} `} />
-    arrow = <polygon className={className}
+    let arrow = <polygon className={className} style={props.runAnimation ?  { animationDelay: `${props.delay}ms` } : {}}
         points={`${determinArrowPointsString(parentX, parentY, currentX, currentY)} `} />
+
+    // let arrow =<>
+    // <line className={""} x1={`${ props.x}`}  y1={`${props.y}`}
+    // x2={`${props.x - ARROW_LINE_LENGTH}`}  y2={`${props.y - ARROW_LINE_LENGTH}`} stroke={'black'}  strokeWidth={2}/>
+    // <line className={""} x1={`${ props.x}`}  y1={`${props.y}`}
+    // x2={`${props.x - ARROW_LINE_LENGTH}`}  y2={`${props.y + ARROW_LINE_LENGTH}`} />
+    // </>
+    // let arrow = <><polygon points="2,7 0,0 11,7 0,14" transform="translate(100 100) rotate(45 0 0) translate(-2 -7)" stroke="red" fill="red" />
+    //     <line x1="0" y1="0" x2="100" y2="100" stroke="green" /></>
+
+    // let arrow = <polygon className={className} 
+    //     points={`${props.x},${props.y} ${props.x - ARROW_LINE_LENGTH},${props.y - ARROW_LINE_LENGTH} ${props.x},${props.y} ${props.x - ARROW_LINE_LENGTH},${props.y + ARROW_LINE_LENGTH} `} />
 
     let element;
     switch (props.displayShape) {
