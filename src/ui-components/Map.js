@@ -6,7 +6,7 @@ import css from "./map.module.css";
 import Toolbar from "./Toolbar";
 import TableView from "./TableView";
 import Chart from "./Chart";
-
+import { v4 as uuidv4 } from 'uuid';
 export const SHAPES = {
     BIG_CIRCLE: 'BIG_CIRCLE',
     RECTANGLE: 'RECTANGLE',
@@ -114,9 +114,13 @@ class Map extends React.Component {
             if (childrenForRhombus[0].condition === 'TRUE') {
                 const item = { id: childrenForRhombus[0].id, condition: 'FALSE' };
                 repository.save(item);
+                const list = repository.getList({ rootId: this.state.rootId });
+                this.setState({ list });
             } else if (childrenForRhombus[0].condition === 'FALSE') {
                 const item = { id: childrenForRhombus[0].id, condition: 'TRUE' };
                 repository.save(item);
+                const list = repository.getList({ rootId: this.state.rootId });
+                this.setState({ list });
             }
 
         }
@@ -124,9 +128,13 @@ class Map extends React.Component {
             if (childrenForRhombus[0].condition === 'TRUE') {
                 const item = { id: childrenForRhombus[1].id, condition: 'FALSE' };
                 repository.save(item);
+                const list = repository.getList({ rootId: this.state.rootId });
+                this.setState({ list });
             } else if (childrenForRhombus[0].condition === 'FALSE') {
                 const item = { id: childrenForRhombus[1].id, condition: 'TRUE' };
                 repository.save(item);
+                const list = repository.getList({ rootId: this.state.rootId });
+                this.setState({ list });
             }
 
         }
@@ -143,6 +151,35 @@ class Map extends React.Component {
     //         condition: item.condition
     //     });
     // };
+    updateInputsValues = (e, field, index) => {
+        const item = repository.getItem(this.state.id);
+        let inputsList = item.inputsList;
+        inputsList[index][field] = e.target.value;
+        repository.save(item);
+        this.setState({ inputsList });
+    }
+    updateInputs = ({ pointer, op, }) => {
+        const item = repository.getItem(this.state.id);
+        let inputsList = item.inputsList;
+        if (!inputsList || inputsList.length === 0) {
+            if (op === 'ADD') {
+
+                inputsList = [{ key: '', value: '', inputId: uuidv4() }]
+            }
+        } else {
+            if (op === "ADD") {
+                inputsList.push({ key: '', value: '', inputId: uuidv4() })
+
+            } else if (op === "REMOVE") {
+                inputsList.splice(pointer, 1)
+            }
+
+        }
+        item.inputsList = inputsList;
+        repository.save(item);
+        // const list = repository.getList({ rootId: this.state.rootId });
+        this.setState({ inputsList });
+    }
 
     changeComment = (e) => {
         const comment = e.target.value;
@@ -184,7 +221,8 @@ class Map extends React.Component {
             displayShape: item.displayShape,
             list,
             condition,
-            parentId: item.parentId
+            parentId: item.parentId,
+            inputsList: item.inputsList
         });
     }
     add() {
@@ -282,6 +320,7 @@ class Map extends React.Component {
                 condition={this.state.condition}
                 runAnimation={this.state.runAnimation}
                 onAnimate={this.onAnimate}
+                inputsList = {this.state.inputsList}
             />
         }
         return (
@@ -301,11 +340,14 @@ class Map extends React.Component {
                     displayShape={this.state.displayShape}
                     name={this.state.name}
                     condition={this.state.condition}
+                    inputsList={this.state.inputsList}
                     onChangeName={this.changeName}
                     onChangeShape={this.changeShape}
                     onChangeComment={this.changeComment}
                     comment={this.state.comment}
-                    invertConditionalFlows={this.invertConditionalFlows} />
+                    invertConditionalFlows={this.invertConditionalFlows}
+                    updateInputs={this.updateInputs} 
+                    updateInputsValues={this.updateInputsValues}/>
             </>
         );
     }

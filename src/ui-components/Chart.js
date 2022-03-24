@@ -156,7 +156,8 @@ function Chart(props) {
                                 condition={element.condition}
                                 parent={element.parent}
                                 delay={element.delay}
-                                runAnimation={props.runAnimation} />
+                                runAnimation={props.runAnimation}
+                                inputsList={props.inputsList} />
                         ))
                     }
                     )

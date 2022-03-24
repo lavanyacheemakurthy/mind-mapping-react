@@ -2,7 +2,9 @@ import css from "./chartelement.module.css";
 import { SHAPES } from "./Map";
 const BIG_CIRCLE_RADIUS = 40;
 const RHOMBUS_HALF_DIAMETER = 30;
-const ARROW_LINE_LENGTH = 25;
+const ARROW_LINE_LENGTH = 15;
+// const PARALLEL_SIDE_LENGTH = 50;
+// const PARALLEL_EXTENDED_LENGTH = 10;
 function determinePointsbasedOnDirection(x, y, x1, y1, direction) {
     switch (direction) {
         case 'UP':
@@ -87,26 +89,35 @@ function ChartElement(props) {
     if (props.isSelected) {
         className += ' ' + css.selected;
     }
-    const root = <circle className={className} style={props.runAnimation ?  { animationDelay: `${props.delay}ms` } : {}} cx={props.x} cy={props.y} r={`${BIG_CIRCLE_RADIUS}`} fill="none" stroke="black" />;
-    let rect = <rect className={className} style={props.runAnimation ?  { animationDelay: `${props.delay}ms` } : {}}
+    const root = <circle className={className} style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}} cx={props.x} cy={props.y} r={`${BIG_CIRCLE_RADIUS}`} fill="none" stroke="black" />;
+    let rect = <rect className={className} style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}}
         rx="3" ry="3"
         x={x} y={props.y - HEIGHT / 2}
         width={WIDTH} height={HEIGHT} fill="none" stroke="black" />;
-    let rhombus = <polygon className={className} style={props.runAnimation ?  { animationDelay: `${props.delay}ms` } : {}} points={`${props.x},  ${props.y - RHOMBUS_HALF_DIAMETER}
+    let rhombus = <polygon className={className} style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}} points={`${props.x},  ${props.y - RHOMBUS_HALF_DIAMETER}
      ${props.x + RHOMBUS_HALF_DIAMETER},  ${props.y} 
         ${props.x},${props.y + RHOMBUS_HALF_DIAMETER} 
         ${props.x - RHOMBUS_HALF_DIAMETER},${props.y}  
         ${props.x},  ${props.y - RHOMBUS_HALF_DIAMETER}`}
         fill="none" stroke="black"
     />
-    const node = <circle cx={props.x} cy={props.y} r="3" className={className} style={props.runAnimation ?  { animationDelay: `${props.delay}ms` } : {}} />
+    const node = <circle cx={props.x} cy={props.y} r="3" className={className} style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}} />
     let { parent: { x: parentX, y: parentY } = {} } = props;
     let { x: currentX, y: currentY } = props;
     console.log("Parents X and Y ", parentX, parentY);
     console.log("Current X and Y ", currentX, currentY);
-    let arrow = <polygon className={className} style={props.runAnimation ?  { animationDelay: `${props.delay}ms` } : {}}
-        points={`${determinArrowPointsString(parentX, parentY, currentX, currentY)} `} />
-
+    let arrow = <polygon className={className}
+        style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}}
+        points={`${determinArrowPointsString(parentX, parentY, currentX, currentY)} `}
+        strokeWidth="3" />
+    // arrow = <polygon className={className} style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}}
+    //     points={`${props.x},  ${props.y}
+    //     ${props.x + PARALLEL_SIDE_LENGTH + PARALLEL_EXTENDED_LENGTH},  ${props.y} 
+    //     ${props.x + PARALLEL_SIDE_LENGTH},${props.y + PARALLEL_SIDE_LENGTH} 
+    //     ${props.x - PARALLEL_EXTENDED_LENGTH},${props.y + PARALLEL_SIDE_LENGTH}  
+    //     ${props.x},  ${props.y}`}
+    //     fill="none" stroke="black"
+    // />
     // let arrow =<>
     // <line className={""} x1={`${ props.x}`}  y1={`${props.y}`}
     // x2={`${props.x - ARROW_LINE_LENGTH}`}  y2={`${props.y - ARROW_LINE_LENGTH}`} stroke={'black'}  strokeWidth={2}/>
@@ -143,10 +154,42 @@ function ChartElement(props) {
         <>
             <g onClick={() => props.onClick(props.id)}>
                 {element}
-                <text className={css.text + ' ' + textAlignment}
-                    x={props.x + textOffset} y={props.y}>{props.name}</text>
-                {/* <polygon points={'50,0 21,90 98,35'} /> */}
+                {props.displayShape !== SHAPES.ARROW && <text className={css.text + ' ' + textAlignment}
+                    x={props.x + textOffset} y={props.y}>{props.name}</text>}
+                {props.displayShape === SHAPES.ARROW &&
+                    <>
+                        {props.inputsList?.map((x, i) => {
+                            return (
+                                <text className={css.text + ' ' + textAlignment}
+                                    x={props.x + textOffset} y={props.y + (i * 10)}>
+                                    {x.key && x.value && x.key + " : " + x.value + " || "}
+                                </text>
+                            )
+                        })}
+                    </>
+                    // <text className={css.text + ' ' + textAlignment} 
+                    // // style={{ width: '50px', wordBreak: 'break-all' }}
+                    //     x={props.x + textOffset} y={props.y}>
+                    //     {props.inputsList?.map(x => x.key + " : " + x.value).join(" || ")}
+                    // </text>
+                }
+                {/* <text x={props.x + textOffset} y={props.y+50}>{props.name}</text> */}
+
             </g>
+            {false && props.displayShape === SHAPES.ARROW &&
+                <foreignObject x={props.x - 200} y={props.y - 200} width="160" height="160">
+                    <div>
+                        {/* foreignObject not getting rendered */}
+                        {props.inputsList?.map(x => {
+                            <div style={{ display: 'flex', backgroundColor: 'blue' }}>
+                                <div><b>{x.key} :
+                                </b></div>
+                                <div>{x.value}</div>
+                            </div>
+                        })}
+                    </div>
+
+                </foreignObject>}
         </>
     );
 }
