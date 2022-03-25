@@ -44,7 +44,14 @@ function Details(props) {
                 {props.displayShape === SHAPES.ARROW &&
                     <fieldset>
                         <label for="shape">Select Inputs</label>
-                        <Inputs className={css.inputs_div} data={[{key:'name',value:'lavanya'},{key:'name',value:'lavanya'}]}/>
+                        <Inputs 
+                        className={css.inputs_div} 
+                        data={props.inputsList}
+                        displayShape={props.displayShape}
+                        updateInputs={props.updateInputs}
+                        updateInputsValues={props.updateInputsValues}
+                        // data={[{key:'name',value:'lavanya'},{key:'name',value:'lavanya'}]}
+                        />
                     </fieldset>}
                     <fieldset>
                     <label>Comments</label>
