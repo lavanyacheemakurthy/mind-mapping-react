@@ -122,19 +122,42 @@ function Chart(props) {
         { name: 'zoomIn', onClick: (e) => props.onZoomIn(e) },
         { name: 'zoomOut', onClick: (e) => props.onZoomOut(e) },
         { name: 'panTool', onClick: props.onToggleMoveMode },
-        { name: props.runAnimation ? 'stop':'play', onClick: (e) => props.onAnimate() }
+        { name: props.runAnimation ? 'stop' : 'play', onClick: (e) => props.onAnimate() }
     ];
-
+    const determinePaths = (elements) => {
+        let leaves = elements.filter(x => elements.filter(y => y.parent?.id === x.id).length === 0);
+        let paths = [];
+        let delay = 0;
+        leaves.map(leaf => {
+            let iteratingLeaf = JSON.parse(JSON.stringify(leaf));
+            let currentLeafPath = [iteratingLeaf]
+            do {
+                let currentsParent = elements.filter(p => p.id === iteratingLeaf.parent.id);
+                currentLeafPath.push(currentsParent[0]);
+                iteratingLeaf = JSON.parse(JSON.stringify(currentsParent[0]));
+            }while (iteratingLeaf.parent);
+            currentLeafPath.push(iteratingLeaf) // root will not have parent and loop stops with out adding root node
+            paths.push(currentLeafPath.reverse().map(x => {
+                delay = delay + 100;
+                x.delay = delay;
+                return JSON.parse(JSON.stringify(x))
+            }
+            ))
+            console.log("currentLeafPath : ", leaf.name, currentLeafPath);
+        });
+        return paths;
+    }
     let elements = setElements(props.list);
     if (props.runAnimation) {
         elements = getDelays(elements, elements[0]);
+        // determinePaths(elements)
     } else {
         elements = removeDelays(elements)
     }
     return (
         <div className={css.container}>
-            <Toolbar list={zoomMenu} type="default" location={['horisontal', 'right', 'top']} />
-            <svg viewBox={`${props.x} ${props.y} ${WIDTH} ${HEIGHT}`}
+            <Toolbar list={zoomMenu} type="default" location={['horizontal', 'right', 'top']} />
+            {!props.runAnimation && <svg viewBox={`${props.x} ${props.y} ${WIDTH} ${HEIGHT}`}
                 onMouseDown={(e) => props.onMouseDown(e)}
                 onMouseMove={(e) => props.onMouseMove(e)}
                 onMouseUp={() => props.onMouseUp()}>
@@ -162,7 +185,18 @@ function Chart(props) {
                     }
                     )
                 }
-            </svg>
+            </svg>}
+
+            <div>
+                {props.runAnimation && <div>
+                    
+                    { determinePaths(elements)?.map(x=>{
+                        return (<div>
+                            Path for {x[x.length-1].name} is  : {x.slice(1).map(p=>p.name).join(" -> ")}
+                        </div>)
+                    })}
+                    </div>}
+            </div>
         </div>
     );
 }
