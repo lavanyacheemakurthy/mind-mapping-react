@@ -19,7 +19,7 @@ class Home extends React.Component {
             name: 'Bright Idea!',
             level: 0,
             parentId: null,
-            displayShape:SHAPES.BIG_CIRCLE
+            displayShape:SHAPES.BIG_CIRCLE,
         });
         this.setState({list: repository.getList({level: 0})});
     }

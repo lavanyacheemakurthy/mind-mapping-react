@@ -27,7 +27,7 @@
     top: auto;
     justify-content: flex-end;
 }
-.horisontal {
+.horizontal {
     height: 42px;
     flex-flow: row;
 }

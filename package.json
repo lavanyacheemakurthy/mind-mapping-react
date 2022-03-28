@@ -2,6 +2,10 @@
   "name": "mind-mapping-poc",
   "version": "0.1.0",
   "private": true,
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/Team-Jugglers/mind-mapping-react"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
@@ -35,5 +39,23 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "contributors": [
+    {
+      "name": "Sai Lavanya Cheemakurthy",
+      "email": "lavanya.sai@accionlabs.com",
+      "url": "https://accionlabs.com/"
+    }
+  ],
+  "bugs":"https://github.com/Team-Jugglers/mind-mapping-react/issues",
+  "keywords": [
+    "mind maps",
+    "mindmaps",
+    "pictorial representation",
+    "test case generation",
+    "flow charts",
+    "testcases"
+  ],
+  "description": "A package to generate test cases in a way that testing becomes more easy than manually writing test cases using pictorial representation of flows possible in any application with more features."
+  
 }

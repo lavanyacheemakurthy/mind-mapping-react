@@ -153,14 +153,14 @@ class Map extends React.Component {
     // };
     updateInputsValues = (e, field, index) => {
         const item = repository.getItem(this.state.id);
-        let inputsList = item.inputsList;
+        let inputsList =item.inputsList;
         inputsList[index][field] = e.target.value;
         repository.save(item);
         this.setState({ inputsList });
     }
     updateInputs = ({ pointer, op, }) => {
         const item = repository.getItem(this.state.id);
-        let inputsList = item.inputsList;
+        let inputsList = item.inputsList
         if (!inputsList || inputsList.length === 0) {
             if (op === 'ADD') {
 

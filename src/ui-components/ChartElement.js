@@ -158,11 +158,12 @@ function ChartElement(props) {
                     x={props.x + textOffset} y={props.y}>{props.name}</text>}
                 {props.displayShape === SHAPES.ARROW &&
                     <>
-                        {props.inputsList?.map((x, i) => {
+                        {"Name :" + props.name} : {props.inputsList?.map((x, i) => {
                             return (
                                 <text className={css.text + ' ' + textAlignment}
                                     x={props.x + textOffset} y={props.y + (i * 10)}>
-                                    {x.key && x.value && x.key + " : " + x.value + " || "}
+                                    {i === 0 ? "Name : " + props.name +"    Inputs : "+ (x.key && x.value && x.key + " : " + x.value + " || ") 
+                                    : (x.key && x.value && x.key + " : " + x.value + " || ")}
                                 </text>
                             )
                         })}
@@ -180,7 +181,7 @@ function ChartElement(props) {
                 <foreignObject x={props.x - 200} y={props.y - 200} width="160" height="160">
                     <div>
                         {/* foreignObject not getting rendered */}
-                        {props.inputsList?.map(x => {
+                        {"Name :" + props.name} : {props.inputsList?.map(x => {
                             <div style={{ display: 'flex', backgroundColor: 'blue' }}>
                                 <div><b>{x.key} :
                                 </b></div>
