@@ -5,8 +5,8 @@ import Header from "./ui-components/Header";
 import LeftMenu from "./ui-components/LeftMenu";
 import router from "./ui-components/router";
 import routes from "./ui-components/routes";
-import {} from "./App.css";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { } from "./App.css";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -23,6 +23,9 @@ class App extends React.Component {
   componentDidMount() {
     this._isMounted = true;
   }
+  componentWillUnmount(){
+    window.sessionStorage.removeItem('mindMapsAuth')
+  }
   onRouteChange = () => {
     const route = router.getRoute();
     if (this._isMounted) {
@@ -34,14 +37,15 @@ class App extends React.Component {
   };
   toggleMenu = () => {
     const isMenuVisible = !this.state.isMenuVisible;
-    this.setState({isMenuVisible});
+    this.setState({ isMenuVisible });
   };
   hideMenu = () => {
-    this.setState({isMenuVisible: false});
+    this.setState({ isMenuVisible: false });
   };
+
   render() {
     return (<div>
-      <Header onMenuClick={this.toggleMenu}/>
+      <Header onMenuClick={this.toggleMenu} />
       <LeftMenu isMenuVisible={this.state.isMenuVisible} onMouseLeave={this.hideMenu} />
       <Breadcrumbs list={this.state.breadcrumbs} />
       <Content component={this.state.component} />

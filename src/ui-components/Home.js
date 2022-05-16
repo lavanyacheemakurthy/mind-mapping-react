@@ -5,12 +5,14 @@ import css from "./home.module.css";
 import Card from "./Card";
 import router from "./router";
 import { SHAPES } from "./Map";
+import { Button } from "react-bootstrap";
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            list: repository.getList({level: 0})
+            list: repository.getList({ level: 0 }),
+            mindMapsAuth :JSON.parse(window.sessionStorage.getItem('mindMapsAuth'))
         }
     }
 
@@ -19,9 +21,9 @@ class Home extends React.Component {
             name: 'Bright Idea!',
             level: 0,
             parentId: null,
-            displayShape:SHAPES.BIG_CIRCLE,
+            displayShape: SHAPES.BIG_CIRCLE,
         });
-        this.setState({list: repository.getList({level: 0})});
+        this.setState({ list: repository.getList({ level: 0 }) });
     }
 
     actionMenu = [
@@ -47,7 +49,7 @@ class Home extends React.Component {
             <>
                 <h1>Home</h1>
                 <Toolbar list={this.actionMenu} type="alert" location={['vertical', 'right', 'bottom']} />
-                <div className={css.list}>
+                {this.state.mindMapsAuth && <div className={css.list}>
                     {
                         this.state.list.map(item => (
                             <div className={css.item}
@@ -60,7 +62,10 @@ class Home extends React.Component {
                             </div>
                         ))
                     }
-                </div>
+                </div>}
+                {!this.state.mindMapsAuth && <div>
+                    <h4>You need to login to see this page</h4>
+                    <Button onClick={()=>router.setRoute('login')}>Please Login </Button></div>}
             </>
         );
     }

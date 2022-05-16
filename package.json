@@ -2,15 +2,18 @@
   "name": "mind-mapping-poc",
   "version": "0.1.0",
   "private": true,
-  "repository":{
+  "repository": {
     "type": "git",
     "url": "https://github.com/Team-Jugglers/mind-mapping-react"
   },
   "dependencies": {
+    "@lottiefiles/react-lottie-player": "^3.4.4",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.1.3",
     "react": "^17.0.2",
+    "react-bootstrap": "^2.4.0",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
     "uuid": "^8.3.2",
@@ -47,7 +50,7 @@
       "url": "https://accionlabs.com/"
     }
   ],
-  "bugs":"https://github.com/Team-Jugglers/mind-mapping-react/issues",
+  "bugs": "https://github.com/Team-Jugglers/mind-mapping-react/issues",
   "keywords": [
     "mind maps",
     "mindmaps",
@@ -57,5 +60,4 @@
     "testcases"
   ],
   "description": "A package to generate test cases in a way that testing becomes more easy than manually writing test cases using pictorial representation of flows possible in any application with more features."
-  
 }

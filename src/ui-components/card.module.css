@@ -2,7 +2,7 @@
     width: 100%;
     overflow: hidden;
     position: relative;
-    height: 162px;
+    height: 175px;
     cursor: pointer;
     padding: 10px;
     box-sizing: border-box;
@@ -16,7 +16,9 @@
 }
 
 .selected {
-    background: content-box conic-gradient(rgb(245, 125, 235), rgb(126, 138, 245));
+    
+    /* background: content-box conic-gradient(rgb(245, 125, 235), rgb(126, 138, 245)); */
+    background: content-box conic-gradient(#FF512F, #F09819);
     /* background: content-box conic-gradient(rgb(245, 125, 235), rgb(126, 138, 245)); */
     color: white;
 }
