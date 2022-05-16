@@ -4,6 +4,7 @@ import Toolbar from './Toolbar';
 
 function LeftMenu(props) {
     const list = [
+        {name:'login',onClick:()=>router.setRoute('login')},
         { name: 'home', onClick: () => router.setRoute('home') },
         { name: 'help', onClick: () => router.setRoute('help') }
     ];

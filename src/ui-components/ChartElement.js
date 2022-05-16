@@ -104,31 +104,12 @@ function ChartElement(props) {
     const node = <circle cx={props.x} cy={props.y} r="3" className={className} style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}} />
     let { parent: { x: parentX, y: parentY } = {} } = props;
     let { x: currentX, y: currentY } = props;
-    console.log("Parents X and Y ", parentX, parentY);
-    console.log("Current X and Y ", currentX, currentY);
+    // console.log("Parents X and Y ", parentX, parentY);
+    // console.log("Current X and Y ", currentX, currentY);
     let arrow = <polygon className={className}
         style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}}
         points={`${determinArrowPointsString(parentX, parentY, currentX, currentY)} `}
         strokeWidth="3" />
-    // arrow = <polygon className={className} style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}}
-    //     points={`${props.x},  ${props.y}
-    //     ${props.x + PARALLEL_SIDE_LENGTH + PARALLEL_EXTENDED_LENGTH},  ${props.y} 
-    //     ${props.x + PARALLEL_SIDE_LENGTH},${props.y + PARALLEL_SIDE_LENGTH} 
-    //     ${props.x - PARALLEL_EXTENDED_LENGTH},${props.y + PARALLEL_SIDE_LENGTH}  
-    //     ${props.x},  ${props.y}`}
-    //     fill="none" stroke="black"
-    // />
-    // let arrow =<>
-    // <line className={""} x1={`${ props.x}`}  y1={`${props.y}`}
-    // x2={`${props.x - ARROW_LINE_LENGTH}`}  y2={`${props.y - ARROW_LINE_LENGTH}`} stroke={'black'}  strokeWidth={2}/>
-    // <line className={""} x1={`${ props.x}`}  y1={`${props.y}`}
-    // x2={`${props.x - ARROW_LINE_LENGTH}`}  y2={`${props.y + ARROW_LINE_LENGTH}`} />
-    // </>
-    // let arrow = <><polygon points="2,7 0,0 11,7 0,14" transform="translate(100 100) rotate(45 0 0) translate(-2 -7)" stroke="red" fill="red" />
-    //     <line x1="0" y1="0" x2="100" y2="100" stroke="green" /></>
-
-    // let arrow = <polygon className={className} 
-    //     points={`${props.x},${props.y} ${props.x - ARROW_LINE_LENGTH},${props.y - ARROW_LINE_LENGTH} ${props.x},${props.y} ${props.x - ARROW_LINE_LENGTH},${props.y + ARROW_LINE_LENGTH} `} />
 
     let element;
     switch (props.displayShape) {
@@ -136,7 +117,6 @@ function ChartElement(props) {
             element = root;
             break;
         case SHAPES.RHOMBUS:
-            //alert(props.x + " "+props.y)
             element = rhombus;
             break;
         case SHAPES.RECTANGLE:
@@ -149,21 +129,40 @@ function ChartElement(props) {
             element = node;
             break;
     }
-
+    const determineStrings = (bigString) => {
+        var result = [];
+        while (bigString.length) {
+            result.push(bigString.substr(0, 10));
+            bigString = bigString.substr(10);
+        }
+        return result;
+    }
     return (
         <>
             <g onClick={() => props.onClick(props.id)}>
                 {element}
-                {props.displayShape !== SHAPES.ARROW && <text className={css.text + ' ' + textAlignment}
-                    x={props.x + textOffset} y={props.y}>{props.name}</text>}
+                {props.displayShape !== SHAPES.ARROW && props.displayShape !== SHAPES.RHOMBUS
+                    && <text className={css.text + ' ' + textAlignment}
+                        x={props.x + textOffset} y={props.y}>
+                        {props.name}
+                    </text>}
+                {props.displayShape === SHAPES.RHOMBUS &&
+                    <text className={css.text + ' ' + textAlignment}
+                        x={props.x - textOffset} y={props.y - textOffset}>
+                        {determineStrings(props.name).map((x, i) => {
+                            return <tspan x={props.x - textOffset} dy={`1em`}>
+                                {x}
+                            </tspan>
+                        })}
+                    </text>}
                 {props.displayShape === SHAPES.ARROW &&
                     <>
                         {"Name :" + props.name} : {props.inputsList?.map((x, i) => {
                             return (
                                 <text className={css.text + ' ' + textAlignment}
                                     x={props.x + textOffset} y={props.y + (i * 10)}>
-                                    {i === 0 ? "Name : " + props.name +"    Inputs : "+ (x.key && x.value && x.key + " : " + x.value + " || ") 
-                                    : (x.key && x.value && x.key + " : " + x.value + " || ")}
+                                    {i === 0 ? "Name : " + props.name + "    Inputs : " + (x.key && x.value && x.key + " : " + x.value + " || ")
+                                        : (x.key && x.value && x.key + " : " + x.value + " || ")}
                                 </text>
                             )
                         })}

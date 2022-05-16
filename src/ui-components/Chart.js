@@ -11,7 +11,7 @@ import Toolbar from "./Toolbar";
 * @param start the node to start BFS from.
 * @return Array array of input having list of JSON objects which one more property delay added in each node object
 */
-function getDelays(data, start) {
+function getDelays(data, start) { // BFS
     //A Queue to manage the nodes that have yet to be visited
     var queue = [];
     //Adding the node to start from
@@ -63,6 +63,41 @@ function getDelays(data, start) {
     return toReturnData;
 
 }
+function determineChilds(parent, elements) {
+    return elements.filter(x => x.parent && x.parent.id === parent.id);
+}
+
+function getDelaysNestingNodes(elements, parent) {
+    let stack = [];
+    let visited = {};
+    let delays = {};
+    let delay = 100;
+    let delayBuff = 600;
+    let node = JSON.parse(JSON.stringify(parent))
+    //DFS 
+    stack.push(node);
+    while (stack.length !== 0) {
+        node = stack.pop();
+        let childrenOfparent = determineChilds(node, elements)
+        if (!visited[`${node.id}`]) {
+            visited[`${node.id}`] = true;
+            node.delay = delay + delayBuff;
+            delays[`${node.id}`] = node.delay;
+            delay = delay + delayBuff;
+            console.log(`we visited ${node.id}`)
+            for (let j = 0; j < childrenOfparent.length; j++) {
+                stack.push(childrenOfparent[j]);
+            }
+        }
+
+    }
+    console.log("Delays : ", delays)
+    return elements.map(x => {
+        return { ...x, delay: delays[`${x.id}`] }
+    });
+
+
+}
 function removeDelays(elements) {
     return elements.map(x => {
         delete x.delay;
@@ -73,19 +108,21 @@ function Chart(props) {
     const WIDTH = props.width / props.zoom;
     const HEIGHT = props.height / props.zoom;
     const R = 90;
+    let newVar = 5;
+    let newVarY = 3;
 
     const getChildren = (list, parent, elements, dPhi) => {
         const children = list.filter(item => item.parentId === parent.id);
         for (let i = 0; i < children.length; i++) {
             let item = children[i];
             let phi = i * dPhi / children.length + parent.phi;
-            const isLeftSide = (phi > Math.PI / 2) && (phi < 3 * Math.PI / 2);
+            const isLeftSide = (phi > Math.PI / 2.5) && (phi < 3 * Math.PI / 2);
             const element = {
                 id: item.id,
                 name: item.name,
                 level: item.level,
-                x: parent.x + R * Math.cos(phi),
-                y: parent.y + R * Math.sin(phi),
+                x: parent.x + R * Math.cos(phi) + ((phi > Math.PI / 2) && (phi < 3 * Math.PI / 2) ? - (newVar) : +(newVar)),
+                y: parent.y + R * Math.sin(phi) + ((phi > Math.PI / 2) && (phi < 3 * Math.PI / 2) ? - (newVarY) : +(newVarY)),
                 phi,
                 px: parent.x,
                 py: parent.y,
@@ -94,6 +131,10 @@ function Chart(props) {
                 condition: item.condition,
                 parent: parent
             };
+            if (item.length > 3) {
+                newVar = newVar + 5;
+                newVarY = newVarY + 3;
+            }
             elements.push(element);
             getChildren(list, element, elements, dPhi / children.length);
         }
@@ -114,7 +155,7 @@ function Chart(props) {
             displayShape: root.displayShape
         };
         elements.push(rootElement);
-        getChildren(list, rootElement, elements, 2.5 * Math.PI);
+        getChildren(list, rootElement, elements, 2.5 * Math.PI,);
         return elements;
     };
 
@@ -135,7 +176,7 @@ function Chart(props) {
                 let currentsParent = elements.filter(p => p.id === iteratingLeaf.parent.id);
                 currentLeafPath.push(currentsParent[0]);
                 iteratingLeaf = JSON.parse(JSON.stringify(currentsParent[0]));
-            }while (iteratingLeaf.parent);
+            } while (iteratingLeaf.parent);
             currentLeafPath.push(iteratingLeaf) // root will not have parent and loop stops with out adding root node
             paths.push(currentLeafPath.reverse().map(x => {
                 delay = delay + 100;
@@ -149,7 +190,11 @@ function Chart(props) {
     }
     let elements = setElements(props.list);
     if (props.runAnimation) {
-        elements = getDelays(elements, elements[0]);
+        // elements = getDelays(elements, elements[0]);
+        // elements = getDelaysNestingNodes(elements,elements[0]);
+        console.log("Paths : ", determinePaths(elements));
+        elements = getDelaysNestingNodes(elements, elements[0]);
+        // console.log(paths);
         // determinePaths(elements)
     } else {
         elements = removeDelays(elements)
@@ -157,45 +202,87 @@ function Chart(props) {
     return (
         <div className={css.container}>
             <Toolbar list={zoomMenu} type="default" location={['horizontal', 'right', 'top']} />
-            {!props.runAnimation && <svg viewBox={`${props.x} ${props.y} ${WIDTH} ${HEIGHT}`}
-                onMouseDown={(e) => props.onMouseDown(e)}
-                onMouseMove={(e) => props.onMouseMove(e)}
-                onMouseUp={() => props.onMouseUp()}>
-                <Connection list={elements} />
-                {
-                    elements.map(element => {
-                        return ((
-                            <ChartElement
-                                key={element.id}
-                                onClick={props.onClick}
-                                id={element.id}
-                                phi={element.phi}
-                                level={element.level}
-                                x={element.x} y={element.y}
-                                isSelected={element.id === props.id}
-                                px={element.px} py={element.py}
-                                name={element.name}
-                                displayShape={element.displayShape}
-                                condition={element.condition}
-                                parent={element.parent}
-                                delay={element.delay}
-                                runAnimation={props.runAnimation}
-                                inputsList={props.inputsList} />
-                        ))
+            {false && !props.runAnimation &&
+                <svg viewBox={`${props.x} ${props.y} ${WIDTH} ${HEIGHT}`}
+                    onMouseDown={(e) => props.onMouseDown(e)}
+                    onMouseMove={(e) => props.onMouseMove(e)}
+                    onMouseUp={() => props.onMouseUp()}>
+                    <Connection list={elements} />
+                    {
+                        elements.map(element => {
+                            return ((
+                                <ChartElement
+                                    key={element.id}
+                                    onClick={props.onClick}
+                                    id={element.id}
+                                    phi={element.phi}
+                                    level={element.level}
+                                    x={element.x} y={element.y}
+                                    isSelected={element.id === props.id}
+                                    px={element.px} py={element.py}
+                                    name={element.name}
+                                    displayShape={element.displayShape}
+                                    condition={element.condition}
+                                    parent={element.parent}
+                                    delay={element.delay}
+                                    runAnimation={props.runAnimation}
+                                    inputsList={props.inputsList} />
+                            ))
+                        }
+                        )
                     }
-                    )
-                }
-            </svg>}
+                </svg>}
 
             <div>
-                {props.runAnimation && <div>
-                    
-                    { determinePaths(elements)?.map(x=>{
+                {false && props.runAnimation && <div>
+
+                    {determinePaths(elements)?.map(x => {
                         return (<div>
-                            Path for {x[x.length-1].name} is  : {x.slice(1).map(p=>p.name).join(" -> ")}
+                            Path for {x[x.length - 1].name} is  : {x.slice(1).map(p => p.name).join(" -> ")}
                         </div>)
                     })}
-                    </div>}
+                </div>}
+            </div>
+            <div>
+                <svg viewBox={`${props.x} ${props.y} ${WIDTH} ${HEIGHT}`}
+                    onMouseDown={(e) => props.onMouseDown(e)}
+                    onMouseMove={(e) => props.onMouseMove(e)}
+                    onMouseUp={() => props.onMouseUp()}>
+                    <Connection list={elements} />
+                    {
+                        elements.map(element => {
+                            return ((
+                                <ChartElement
+                                    key={element.id}
+                                    onClick={props.onClick}
+                                    id={element.id}
+                                    phi={element.phi}
+                                    level={element.level}
+                                    x={element.x} y={element.y}
+                                    isSelected={element.id === props.id}
+                                    px={element.px} py={element.py}
+                                    name={element.name}
+                                    displayShape={element.displayShape}
+                                    condition={element.condition}
+                                    parent={element.parent}
+                                    delay={element.delay}
+                                    runAnimation={props.runAnimation}
+                                    inputsList={props.inputsList}
+                                    pathsForPlayAnimation={props.runAnimation ?
+                                        determinePaths(elements) : []} />
+                            ))
+                        }
+                        )
+                    }
+                </svg>
+                {props.runAnimation && <div>
+
+                    {determinePaths(elements)?.map(x => {
+                        return (<div>
+                            Path for {x[x.length - 1].name} is  : {x.slice(1).map(p => p.name).join(" -->> ")}
+                        </div>)
+                    })}
+                </div>}
             </div>
         </div>
     );
