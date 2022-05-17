@@ -74,7 +74,7 @@ function getDelaysNestingNodes(elements, parent) {
     let delay = 100;
     let delayBuff = 600;
     let node = JSON.parse(JSON.stringify(parent))
-    //DFS 
+    //DFS  https://codeburst.io/implementing-dfs-and-bfs-using-javascript-5034f3cee9a1
     stack.push(node);
     while (stack.length !== 0) {
         node = stack.pop();
