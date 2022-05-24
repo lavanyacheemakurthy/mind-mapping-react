@@ -161,8 +161,9 @@ class Map extends React.Component {
     const item = repository.getItem(this.state.id);
     let inputsList = item.inputsList;
     inputsList[index][field] = e.target.value;
-    repository.save({ ...item });
+    repository.save({...JSON.parse(JSON.stringify(item))});
     this.setState({ inputsList: [...inputsList] });
+    this.setState({list:repository.getList({ rootId:this.state.rootId })})
   };
   updateInputs = ({ pointer, op }) => {
     const item = repository.getItem(this.state.id);
@@ -182,6 +183,7 @@ class Map extends React.Component {
     repository.save({...JSON.parse(JSON.stringify(item))});
     // const list = repository.getList({ rootId: this.state.rootId });
     this.setState({ inputsList: [...inputsList] });
+    this.setState({list:repository.getList({ rootId:this.state.rootId })})
   };
 
   changeComment = (e) => {
