@@ -1,3 +1,6 @@
+*{
+    --animationDelay : 0ms;
+}
 .container {
     fill: white;
     fill-opacity: 0.9;
@@ -42,6 +45,7 @@
 .play_mode{
     stroke-width: 2px;
     animation: video_effect 2s;
+    animation-delay: var(--animationDelay);
 }
 @keyframes video_effect {
     0% {

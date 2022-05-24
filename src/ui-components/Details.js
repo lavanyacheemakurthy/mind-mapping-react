@@ -46,7 +46,7 @@ function Details(props) {
                         <label for="shape">Select Inputs</label>
                         <Inputs 
                         className={css.inputs_div} 
-                        data={props.inputsList}
+                        data={props.inputsList ?[...props.inputsList]:[]}
                         displayShape={props.displayShape}
                         updateInputs={props.updateInputs}
                         updateInputsValues={props.updateInputsValues}
