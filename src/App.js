@@ -7,6 +7,7 @@ import router from "./ui-components/router";
 import routes from "./ui-components/routes";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { } from "./App.css";
+export const FIREBASE_URL = 'https://mindmaps-50297-default-rtdb.asia-southeast1.firebasedatabase.app'
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -18,12 +19,32 @@ class App extends React.Component {
       isMenuVisible: false
     };
     router.subscribe(this.onRouteChange);
+    this.initialize = this.initialize.bind(this);
+    this.initialize();
   }
   _isMounted = false;
   componentDidMount() {
     this._isMounted = true;
   }
-  componentWillUnmount(){
+  initialize() {
+    fetch(FIREBASE_URL + '/data.json', {
+      method: 'GET'
+    }).then(res => res.json()).then(res => {
+      let keys = res ? Object.keys(res) : null;
+      if (keys && keys.length > 0) {
+        keys.sort((a, b) => res[a].insertDate > res[b].insertDate ? 1 : -1)
+        let latestData = res[keys.slice(-1)];
+        console.log("latest data", latestData);
+        if (latestData && latestData.mapsData && latestData.mapsData.length > 0) {
+          window.localStorage.setItem("data", JSON.stringify(latestData.mapsData))
+        }
+      } else {
+        window.localStorage.removeItem("data")
+      }
+
+    })
+  }
+  componentWillUnmount() {
     window.sessionStorage.removeItem('mindMapsAuth')
   }
   onRouteChange = () => {
