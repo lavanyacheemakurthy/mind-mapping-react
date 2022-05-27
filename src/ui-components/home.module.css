@@ -2,10 +2,12 @@
     display: flex;
     flex-flow: row;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .item {
-    width: 25%;
+    width: 20%;
     padding: 5px;
+    margin: 10px;
     box-sizing: border-box;
 }
