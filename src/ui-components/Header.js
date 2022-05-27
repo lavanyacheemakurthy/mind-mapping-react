@@ -1,6 +1,6 @@
 import css from './header.module.css';
 import IconButton from './IconButton';
-
+import logo from '../utilities/images/logo.jpg'
 function Header(props) {
     return (
         <div className={css.container} >
@@ -9,7 +9,7 @@ function Header(props) {
             </svg> */}
             {/* <svg  id="svg" viewBox="0 0 1440 400" xmlns="http://www.w3.org/2000/svg" class="transition duration-300 ease-in-out delay-150"><defs><linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="5%" stop-color="#002bdcff"></stop><stop offset="95%" stop-color="#32ded4ff"></stop></linearGradient></defs><path d="M 0,400 C 0,400 0,200 0,200 C 90.41025641025641,222.72051282051282 180.82051282051282,245.44102564102565 252,238 C 323.1794871794872,230.55897435897435 375.1282051282051,192.95641025641027 455,198 C 534.8717948717949,203.04358974358973 642.6666666666669,250.73333333333332 738,242 C 833.3333333333331,233.26666666666668 916.2051282051282,168.1102564102564 985,156 C 1053.7948717948718,143.8897435897436 1108.5128205128206,184.82564102564103 1182,201 C 1255.4871794871794,217.17435897435897 1347.7435897435898,208.58717948717947 1440,200 C 1440,200 1440,400 1440,400 Z" stroke="none" stroke-width="0" fill="url(#gradient)" class="transition-all duration-300 ease-in-out delay-150 path-0" transform="rotate(-180 720 200)"></path></svg> */}
             <IconButton name="menu" onClick={() => props.onMenuClick()} />
-            <div className={css.title}>MindMaps</div>
+            <div className={css.title}><img src={logo} width={'100px'}/></div>
         </div>);
 }
 

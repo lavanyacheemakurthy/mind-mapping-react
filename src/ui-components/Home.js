@@ -8,7 +8,7 @@ import { SHAPES } from "./Map";
 import { Button } from "react-bootstrap";
 import { FIREBASE_URL } from "../App";
 
-export const handleSavemaps=() =>{
+export const handleSavemaps = () => {
     let toSaveData = JSON.parse(window.localStorage.getItem('data'));
     fetch(FIREBASE_URL + '/data.json', {
         method: 'POST',
@@ -23,15 +23,15 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            list:  repository.getList({ level: 0 }),
+            list: repository.getList({ level: 0 }),
             mindMapsAuth: JSON.parse(window.sessionStorage.getItem('mindMapsAuth'))
         };
-        
+
     }
-   
+
     add() {
         repository.save({
-            name: 'Bright Idea!',
+            name: 'Idea!',
             level: 0,
             parentId: null,
             displayShape: SHAPES.BIG_CIRCLE,
@@ -57,7 +57,7 @@ class Home extends React.Component {
     getMap(id) {
         router.setRoute('map', id);
     }
-    
+
     render() {
         return (
             <>
@@ -68,7 +68,7 @@ class Home extends React.Component {
                     <div className={css.list}>
                         {
                             // this.state.list.map(item => (
-                                repository.getList({ level: 0 }).map(item => (
+                            repository.getList({ level: 0 }).map(item => (
                                 <div className={css.item}
                                     onDoubleClick={() => this.getMap(item.id)}
                                     key={item.id}>
