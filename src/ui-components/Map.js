@@ -7,6 +7,7 @@ import Toolbar from "./Toolbar";
 import TableView from "./TableView";
 import Chart from "./Chart";
 import { v4 as uuidv4 } from "uuid";
+import { handleSavemaps } from "./Home";
 export const SHAPES = {
   BIG_CIRCLE: "BIG_CIRCLE",
   RECTANGLE: "RECTANGLE",
@@ -60,6 +61,9 @@ class Map extends React.Component {
 
   toggleMoveMode = () => {
     const moveMode = !this.state.moveMode;
+
+    handleSavemaps()
+
     this.setState({ moveMode });
   };
 
@@ -69,6 +73,7 @@ class Map extends React.Component {
     e.stopPropagation();
     e.preventDefault();
     const zoom = this.state.zoom * this.ZOOM_FACTOR;
+    handleSavemaps()
     this.setState({ zoom });
   };
 
@@ -76,6 +81,7 @@ class Map extends React.Component {
     e.stopPropagation();
     e.preventDefault();
     const zoom = this.state.zoom / this.ZOOM_FACTOR;
+    handleSavemaps()
     this.setState({ zoom });
   };
   onAnimate = () => {
@@ -161,9 +167,9 @@ class Map extends React.Component {
     const item = repository.getItem(this.state.id);
     let inputsList = item.inputsList;
     inputsList[index][field] = e.target.value;
-    repository.save({...JSON.parse(JSON.stringify(item))});
+    repository.save({ ...JSON.parse(JSON.stringify(item)) });
     this.setState({ inputsList: [...inputsList] });
-    this.setState({list:repository.getList({ rootId:this.state.rootId })})
+    this.setState({ list: repository.getList({ rootId: this.state.rootId }) })
   };
   updateInputs = ({ pointer, op }) => {
     const item = repository.getItem(this.state.id);
@@ -180,10 +186,10 @@ class Map extends React.Component {
       }
     }
     item.inputsList = JSON.parse(JSON.stringify(inputsList))
-    repository.save({...JSON.parse(JSON.stringify(item))});
+    repository.save({ ...JSON.parse(JSON.stringify(item)) });
     // const list = repository.getList({ rootId: this.state.rootId });
     this.setState({ inputsList: [...inputsList] });
-    this.setState({list:repository.getList({ rootId:this.state.rootId })})
+    this.setState({ list: repository.getList({ rootId: this.state.rootId }) })
   };
 
   changeComment = (e) => {
