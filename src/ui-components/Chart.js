@@ -243,9 +243,11 @@ function Chart(props) {
             GO_TO: "Go to ",
             ENTER_USER_INPUTS: " Enter user inputs as ",
             AFTER: " after ",
-            VALIDATION: " validation ",
+            VALIDATION: " validation check ",
             CLICK: 'Click ',
-            LOADS:'Loads '
+            LOADS: 'loads ',
+            ON_SUCCESS:'on success, ',
+            ON_FAILURE:'on failure, '
         }
         let testCases = [];
         paths.map(item => {
@@ -254,27 +256,69 @@ function Chart(props) {
             let currentCase = ''
             nodes.map((node, index) => {
                 if (node.displayShape === SHAPES.BIG_CIRCLE) {
-                    currentCase = PREFIX_TEXT.GO_TO + node.name + ", "
-                } else if (node.displayShape === SHAPES.ARROW) {
                     if (node.condition === "TRUE") { // This has to be applied in all SHAPES nodes
                         //parent is rhombus and this is true case scenario
+                        currentCase = currentCase+ PREFIX_TEXT.ON_SUCCESS + PREFIX_TEXT.GO_TO + node.name + ", "
                     } else if (node.condition === 'FALSE') {
                         //parent is rhombus and this is false case scenario
+                        currentCase = currentCase+PREFIX_TEXT.ON_FAILURE + PREFIX_TEXT.GO_TO + node.name + ", "
                     } else {
                         // parent is not rombus
+                        currentCase = currentCase+PREFIX_TEXT.GO_TO + node.name + ", "
                     }
+                } else if (node.displayShape === SHAPES.ARROW) {
                     let ipsString = ''
                     node.inputsList.map(ip => {
                         ipsString = ipsString + ip.key + " : " + ip.value + "; "
                     })
-                    currentCase = currentCase + PREFIX_TEXT.ENTER_USER_INPUTS + ipsString + ", "
+                    if (node.condition === "TRUE") { // This has to be applied in all SHAPES nodes
+                        //parent is rhombus and this is true case scenario
+                        currentCase = currentCase +PREFIX_TEXT.ON_SUCCESS+ PREFIX_TEXT.ENTER_USER_INPUTS + ipsString + ", "
+
+                    } else if (node.condition === 'FALSE') {
+                        //parent is rhombus and this is false case scenario
+                        currentCase = currentCase + PREFIX_TEXT.ON_FAILURE + PREFIX_TEXT.ENTER_USER_INPUTS + ipsString + ", "
+
+                    } else {
+                        // parent is not rombus
+                       
+                        currentCase = currentCase + PREFIX_TEXT.ENTER_USER_INPUTS + ipsString + ", "
+
+                    }
 
                 } else if (node.displayShape === SHAPES.RHOMBUS) {
-                    currentCase = currentCase + PREFIX_TEXT.AFTER + node.name + PREFIX_TEXT.VALIDATION + ", "
+                    if (node.condition === "TRUE") { // This has to be applied in all SHAPES nodes
+                        //parent is rhombus and this is true case scenario
+                        currentCase = currentCase + PREFIX_TEXT.ON_SUCCESS+ PREFIX_TEXT.AFTER + node.name + PREFIX_TEXT.VALIDATION + ", "
+                    } else if (node.condition === 'FALSE') {
+                        //parent is rhombus and this is false case scenario
+                        currentCase = currentCase +PREFIX_TEXT.ON_FAILURE + PREFIX_TEXT.AFTER + node.name + PREFIX_TEXT.VALIDATION + ", "
+                    } else {
+                        // parent is not rombus
+                        currentCase = currentCase + PREFIX_TEXT.AFTER + node.name + PREFIX_TEXT.VALIDATION + ", "
+                    }
                 } else if (node.displayShape === SHAPES.RECTANGLE) {
-                    currentCase = currentCase + PREFIX_TEXT.CLICK + node.name +", "
-                }else if (node.displayShape === SHAPES.NODE) {
-                    currentCase = currentCase + PREFIX_TEXT.LOADS + node.name +", "
+                    if (node.condition === "TRUE") { // This has to be applied in all SHAPES nodes
+                        //parent is rhombus and this is true case scenario
+                        currentCase = currentCase + PREFIX_TEXT.ON_SUCCESS+  PREFIX_TEXT.CLICK + node.name + ", "
+                    } else if (node.condition === 'FALSE') {
+                        //parent is rhombus and this is false case scenario
+                        currentCase = currentCase + PREFIX_TEXT.ON_FAILURE +PREFIX_TEXT.CLICK + node.name + ", "
+                    } else {
+                        // parent is not rombus
+                        currentCase = currentCase + PREFIX_TEXT.CLICK + node.name + ", "
+                    }
+                } else if (node.displayShape === SHAPES.NODE) {
+                    if (node.condition === "TRUE") { // This has to be applied in all SHAPES nodes
+                        //parent is rhombus and this is true case scenario
+                        currentCase = currentCase +  PREFIX_TEXT.ON_SUCCESS+ PREFIX_TEXT.LOADS + node.name + ", "
+                    } else if (node.condition === 'FALSE') {
+                        //parent is rhombus and this is false case scenario
+                        currentCase = currentCase +  PREFIX_TEXT.ON_FAILURE +PREFIX_TEXT.LOADS + node.name + ", "
+                    } else {
+                        // parent is not rombus
+                        currentCase = currentCase + PREFIX_TEXT.LOADS + node.name + ", "
+                    }
                 }
             })
             testCases.push(currentCase)
