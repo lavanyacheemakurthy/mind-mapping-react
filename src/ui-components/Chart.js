@@ -243,7 +243,7 @@ function Chart(props) {
             GO_TO: "Go to ",
             ENTER_USER_INPUTS: " Enter user inputs as ",
             AFTER: " after ",
-            VALIDATION: " validation check ",
+            VALIDATION: " check ",
             CLICK: 'Click ',
             LOADS: 'loads ',
             ON_SUCCESS:'on success, ',
