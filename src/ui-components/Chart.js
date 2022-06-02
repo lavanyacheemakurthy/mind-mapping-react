@@ -1,3 +1,6 @@
+import { Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
+import { useState } from "react";
 import css from "./chart.module.css";
 import ChartElement from "./ChartElement";
 import Connection from "./Connection";
@@ -132,6 +135,8 @@ function removeDelays(elements) {
   });
 }
 function Chart(props) {
+  const [bddView, SetBddView] = useState(false);
+  const [manualView, setManualView] = useState(false);
   const WIDTH = props.width / props.zoom;
   const HEIGHT = props.height / props.zoom;
   const R = 95;
@@ -204,6 +209,8 @@ function Chart(props) {
   };
 
   const zoomMenu = [
+    { name: "bdd", onClick: (e) => SetBddView(true) },
+    { name: "manual", onClick: (e) => setManualView(true) },
     { name: "zoomIn", onClick: (e) => props.onZoomIn(e) },
     { name: "zoomOut", onClick: (e) => props.onZoomOut(e) },
     { name: "panTool", onClick: props.onToggleMoveMode },
@@ -394,6 +401,25 @@ function Chart(props) {
         </>
       );
     });
+  };
+  const triggerBrowserPrint = (printableDivId) => {
+    let mywindow = window.open(
+      "",
+      "PRINT",
+      "height=650,width=900,top=100,left=150"
+    );
+
+    mywindow.document.write(
+      `<html><head><title>${"Cucumber scenarios"}</title>`
+    );
+    mywindow.document.write("</head><body >");
+    mywindow.document.write(document.getElementById(printableDivId).innerHTML);
+    mywindow.document.write("</body></html>");
+
+    mywindow.document.close();
+    mywindow.focus();
+    mywindow.print();
+    mywindow.close();
   };
   const determinePathsAsInCucumber = (elements) => {
     let leaves = elements.filter(
@@ -602,6 +628,7 @@ function Chart(props) {
   } else {
     elements = removeDelays(elements);
   }
+
   return (
     <div className={css.container}>
       <Toolbar
@@ -686,7 +713,8 @@ function Chart(props) {
         {props.runAnimation && (
           <div>
             <div>
-              {determinePaths(elements) &&
+              {false &&
+                determinePaths(elements) &&
                 determinePaths(elements).paths &&
                 determinePaths(elements).paths.length > 0 &&
                 determinePaths(elements).paths?.map((x, i) => {
@@ -716,43 +744,6 @@ function Chart(props) {
                   );
                 })}
             </div>
-            {/* <div>
-              Test cases are below :
-              <ul>
-                {determinePaths(elements) &&
-                  determinePaths(elements).testCases &&
-                  determinePaths(elements).testCases.length > 0 &&
-                  determinePaths(elements).testCases?.map((x, i) => {
-                    return (
-                      <li type="square" style={{ color: "green" }}>
-                        {x}
-                      </li>
-                    );
-                  })}
-              </ul>
-            </div> */}
-
-            {/* Cucumber stuff */}
-
-            <div>
-              Cucumber scenarios :
-              <ul>
-                {determinePathsAsInCucumber(elements) &&
-                  determinePathsAsInCucumber(elements).testCases &&
-                  determinePathsAsInCucumber(elements).testCases.length > 0 &&
-                  determinePathsAsInCucumber(elements).testCases?.map(
-                    (path, i) => {
-                      return (
-                        <li type="none" style={{ color: "green" }}>
-                          <h5 style={{ color: "blue" }}>Scenario {i + 1}</h5>
-                          {renderScenario(path)}
-                        </li>
-                      );
-                    }
-                  )}
-              </ul>
-            </div>
-            {/* Cucumber stuff ends */}
 
             <div style={{ color: "orange" }}>
               Animation order :
@@ -765,6 +756,101 @@ function Chart(props) {
                 );
               })}
             </div>
+          </div>
+        )}
+        {bddView && (
+          <div>
+            {/* Cucumber stuff */}
+            <Modal size="lg" show={bddView} onHide={() => SetBddView(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Cucumber scenarios :</Modal.Title>
+              </Modal.Header>
+              <Modal.Body style={{ maxHeight: "500px", overflowY: "auto" }}>
+                <div id="bddView">
+                  <ul>
+                    {determinePathsAsInCucumber(elements) &&
+                      determinePathsAsInCucumber(elements).testCases &&
+                      determinePathsAsInCucumber(elements).testCases.length >
+                        0 &&
+                      determinePathsAsInCucumber(elements).testCases?.map(
+                        (path, i) => {
+                          return (
+                            <li type="none" style={{ color: "green" }}>
+                              <h5 style={{ color: "blue" }}>
+                                Scenario {i + 1}
+                              </h5>
+                              {renderScenario(path)}
+                            </li>
+                          );
+                        }
+                      )}
+                  </ul>
+                </div>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    triggerBrowserPrint("bddView");
+                  }}
+                >
+                  Download
+                </Button>
+                <Button variant="primary" onClick={() => SetBddView(false)}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            {/* Cucumber stuff ends */}
+          </div>
+        )}
+        {manualView && (
+          <div>
+            {/* Cucumber stuff */}
+            <Modal
+              size="lg"
+              show={manualView}
+              onHide={() => setManualView(false)}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Cucumber scenarios :</Modal.Title>
+              </Modal.Header>
+              <Modal.Body style={{ maxHeight: "500px", overflowY: "auto" }}>
+                <div id="manualView">
+                  <div>
+                    Test cases are below :
+                    <ul>
+                      {determinePaths(elements) &&
+                        determinePaths(elements).testCases &&
+                        determinePaths(elements).testCases.length > 0 &&
+                        determinePaths(elements).testCases?.map((x, i) => {
+                          return (
+                            <li type="square" style={{ color: "green" }}>
+                              {x}
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </div>
+                </div>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    triggerBrowserPrint("manualView");
+                  }}
+                >
+                  Download
+                </Button>
+                <Button variant="primary" onClick={() => setManualView(false)}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            {/* Cucumber stuff ends */}
           </div>
         )}
       </div>
