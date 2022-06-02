@@ -409,9 +409,7 @@ function Chart(props) {
       "height=650,width=900,top=100,left=150"
     );
 
-    mywindow.document.write(
-      `<html><head><title>${"Cucumber scenarios"}</title>`
-    );
+    mywindow.document.write(`<html><head><title>${"Scenarios"}</title>`);
     mywindow.document.write("</head><body >");
     mywindow.document.write(document.getElementById(printableDivId).innerHTML);
     mywindow.document.write("</body></html>");
@@ -763,9 +761,9 @@ function Chart(props) {
             {/* Cucumber stuff */}
             <Modal size="lg" show={bddView} onHide={() => SetBddView(false)}>
               <Modal.Header closeButton>
-                <Modal.Title>Cucumber scenarios :</Modal.Title>
+                <Modal.Title>Cucumber scenarios </Modal.Title>
               </Modal.Header>
-              <Modal.Body style={{ maxHeight: "500px", overflowY: "auto" }}>
+              <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
                 <div id="bddView">
                   <ul>
                     {determinePathsAsInCucumber(elements) &&
@@ -814,12 +812,11 @@ function Chart(props) {
               onHide={() => setManualView(false)}
             >
               <Modal.Header closeButton>
-                <Modal.Title>Cucumber scenarios :</Modal.Title>
+                <Modal.Title>Test cases </Modal.Title>
               </Modal.Header>
-              <Modal.Body style={{ maxHeight: "500px", overflowY: "auto" }}>
+              <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
                 <div id="manualView">
                   <div>
-                    Test cases are below :
                     <ul>
                       {determinePaths(elements) &&
                         determinePaths(elements).testCases &&
