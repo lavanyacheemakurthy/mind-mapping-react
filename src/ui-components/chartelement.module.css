@@ -44,20 +44,36 @@
 }
 .play_mode{
     stroke-width: 2px;
+    
     animation: video_effect 2s;
     animation-delay: var(--animationDelay);
 }
 @keyframes video_effect {
     0% {
+        stroke:green;
         stroke-width: 2px;
         stroke-opacity: 1;
     }
     50%{
+        stroke:green;
         stroke-width: 20px;
         stroke-opacity: 0.5;
     }
-    100% {
-        stroke-width: 35px;
+    99% {
+        stroke:green;
+        stroke-width: 30px;
         stroke-opacity: 0.1;
+        /* stroke: rgb(2, 27, 252); */
+    }
+    99% {
+        stroke:green;
+        stroke-width: 30px;
+        stroke-opacity: 0.1;
+        /* stroke: rgb(2, 27, 252); */
+    }
+    100%{
+        stroke-width: 30px;
+        stroke-opacity: 0.01;
+        stroke: rgb(2, 27, 252);
     }
 }
