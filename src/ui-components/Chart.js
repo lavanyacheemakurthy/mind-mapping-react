@@ -775,7 +775,7 @@ function Chart(props) {
                           return (
                             <li type="none" style={{ color: "green" }}>
                               <h5 style={{ color: "blue" }}>
-                                Scenario {i + 1}
+                                Scenario: {i}
                               </h5>
                               {renderScenario(path)}
                             </li>
