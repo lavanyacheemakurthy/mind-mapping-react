@@ -1,5 +1,5 @@
 import css from "./card.module.css";
-import { Player, Controls } from '@lottiefiles/react-lottie-player';
+// import { Player, Controls } from '@lottiefiles/react-lottie-player';
 function Card(props) {
     let className = css.container;
     if (props.isSelected) {
@@ -8,14 +8,8 @@ function Card(props) {
     return (
         <div className={className}
             onClick={props.onClick}>
-            <Player
-                autoplay
-                loop
-                src="https://assets3.lottiefiles.com/packages/lf20_zdo3l6my.json"
-                style={{ height: '100px', width: '300px' }}
-            >
-                <Controls visible={false} buttons={['play', 'repeat', 'frame', 'debug']} />
-            </Player>
+                <img src={`https://source.unsplash.com/random/300x100?sig=${Math.random() * 1000}`} />
+           
             <div className={css.title}>{props.name}</div>
             <div className={css.comment}>{props.comment}</div>
         </div>

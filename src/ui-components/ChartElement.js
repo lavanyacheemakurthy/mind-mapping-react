@@ -8,29 +8,24 @@ const ARROW_LINE_LENGTH = 15;
 function determinePointsbasedOnDirection(x, y, x1, y1, direction) {
   switch (direction) {
     case "UP":
-      return `${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${
-        y1 + ARROW_LINE_LENGTH
-      } ${x1},${y1} ${x1 + ARROW_LINE_LENGTH},${y1 + ARROW_LINE_LENGTH} `;
+      return `${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${y1 + ARROW_LINE_LENGTH
+        } ${x1},${y1} ${x1 + ARROW_LINE_LENGTH},${y1 + ARROW_LINE_LENGTH} `;
       break;
     case "DOWN":
-      return `${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${
-        y1 - ARROW_LINE_LENGTH
-      } ${x1},${y1} ${x1 + ARROW_LINE_LENGTH},${y1 - ARROW_LINE_LENGTH} `;
+      return `${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${y1 - ARROW_LINE_LENGTH
+        } ${x1},${y1} ${x1 + ARROW_LINE_LENGTH},${y1 - ARROW_LINE_LENGTH} `;
       break;
     case "RIGHT":
-      return `${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${
-        y1 - ARROW_LINE_LENGTH
-      } ${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${y1 + ARROW_LINE_LENGTH} `;
+      return `${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${y1 - ARROW_LINE_LENGTH
+        } ${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${y1 + ARROW_LINE_LENGTH} `;
       break;
     case "LEFT":
-      return `${x1},${y1} ${x1 + ARROW_LINE_LENGTH},${
-        y1 - ARROW_LINE_LENGTH
-      } ${x1},${y1} ${x1 + ARROW_LINE_LENGTH},${y1 + ARROW_LINE_LENGTH} `;
+      return `${x1},${y1} ${x1 + ARROW_LINE_LENGTH},${y1 - ARROW_LINE_LENGTH
+        } ${x1},${y1} ${x1 + ARROW_LINE_LENGTH},${y1 + ARROW_LINE_LENGTH} `;
       break;
     default:
-      return `${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${
-        y1 - ARROW_LINE_LENGTH
-      } ${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${y1 + ARROW_LINE_LENGTH} `;
+      return `${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${y1 - ARROW_LINE_LENGTH
+        } ${x1},${y1} ${x1 - ARROW_LINE_LENGTH},${y1 + ARROW_LINE_LENGTH} `;
       break;
   }
 }
@@ -113,8 +108,8 @@ function ChartElement(props) {
       cx={props.x}
       cy={props.y}
       r={`${BIG_CIRCLE_RADIUS}`}
-      fill="none"
-      stroke="black"
+      fill="#FA6470"
+      stroke="#FD0013"
     />
   );
   let rect = (
@@ -127,21 +122,21 @@ function ChartElement(props) {
       y={props.y - HEIGHT / 2}
       width={WIDTH}
       height={HEIGHT}
-      fill="none"
-      stroke="black"
+      fill="#75B5FC"
+      stroke="#0077FE"
     />
   );
   let rhombus = (
     <polygon
       className={className}
       style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}}
-      points={`${props.x},  ${props.y - RHOMBUS_HALF_DIAMETER}
-     ${props.x + RHOMBUS_HALF_DIAMETER},  ${props.y} 
-        ${props.x},${props.y + RHOMBUS_HALF_DIAMETER} 
-        ${props.x - RHOMBUS_HALF_DIAMETER},${props.y}  
-        ${props.x},  ${props.y - RHOMBUS_HALF_DIAMETER}`}
-      fill="none"
-      stroke="black"
+      points={`${props.x + (props?.parent?.displayShape === SHAPES.RECTANGLE ? 15 : 0)},  ${props.y - RHOMBUS_HALF_DIAMETER}
+     ${props.x + (props?.parent?.displayShape === SHAPES.RECTANGLE ? 15 : 0) + RHOMBUS_HALF_DIAMETER},  ${props.y} 
+        ${props.x + (props?.parent?.displayShape === SHAPES.RECTANGLE ? 15 : 0)},${props.y + RHOMBUS_HALF_DIAMETER} 
+        ${props.x + (props?.parent?.displayShape === SHAPES.RECTANGLE ? 15 : 0) - RHOMBUS_HALF_DIAMETER},${props.y}  
+        ${props.x + (props?.parent?.displayShape === SHAPES.RECTANGLE ? 15 : 0)},  ${props.y - RHOMBUS_HALF_DIAMETER}`}
+      fill="#81B531"
+      stroke="#477600"
     />
   );
   const node = (
@@ -151,6 +146,8 @@ function ChartElement(props) {
       r="3"
       className={className}
       style={props.runAnimation ? { animationDelay: `${props.delay}ms` } : {}}
+      fill="#62D4D9"
+      stroke="#008A91"
     />
   );
   let { parent: { x: parentX, y: parentY } = {} } = props;
@@ -168,6 +165,8 @@ function ChartElement(props) {
         currentY
       )} `}
       strokeWidth="3"
+      fill="#E4A2F9"
+      stroke="#BF02FC"
     />
   );
 

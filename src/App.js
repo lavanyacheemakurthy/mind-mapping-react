@@ -66,9 +66,9 @@ class App extends React.Component {
 
   render() {
     return (<div>
-      <Header onMenuClick={this.toggleMenu} />
-      <LeftMenu isMenuVisible={this.state.isMenuVisible} onMouseLeave={this.hideMenu} />
-      <Breadcrumbs list={this.state.breadcrumbs} />
+      {/* <Header onMenuClick={this.toggleMenu} /> */}
+      {/* <LeftMenu isMenuVisible={this.state.isMenuVisible} onMouseLeave={this.hideMenu} /> */}
+      {/* <Breadcrumbs list={this.state.breadcrumbs} /> */}
       <Content component={this.state.component} />
     </div>);
   }

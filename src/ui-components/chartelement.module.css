@@ -2,10 +2,10 @@
     --animationDelay : 0ms;
 }
 .container {
-    fill: white;
+    /* fill: white; */
     fill-opacity: 0.9;
     /* stroke: #1b5e20; */
-    stroke: rgb(2, 27, 252);
+    /* stroke: rgb(2, 27, 252); */
     paint-order: stroke;
     cursor: pointer;
 }
@@ -13,6 +13,7 @@
 .text {
     font-size: 10px;
     alignment-baseline: middle;
+    color:white
 }
 
 .left {
@@ -28,7 +29,7 @@
 }
 
 .selected {
-    stroke-width: 2px;
+    stroke-width: 1.5px;
     animation: pulse infinite 1s linear;
 }
 
@@ -38,7 +39,7 @@
         stroke-opacity: 1;
     }
     100% {
-        stroke-width: 50px;
+        stroke-width: 35px;
         stroke-opacity: 0;
     }
 }

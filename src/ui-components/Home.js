@@ -8,6 +8,7 @@ import { SHAPES } from "./Map";
 import { Button } from "react-bootstrap";
 import { FIREBASE_URL } from "../App";
 
+import logo from '../utilities/images/logo.jpg'
 export const handleSavemaps = () => {
     let toSaveData = JSON.parse(window.localStorage.getItem('data'));
     fetch(FIREBASE_URL + '/data.json', {
@@ -60,8 +61,12 @@ class Home extends React.Component {
 
     render() {
         return (
-            <>
-                <h1>Home</h1>
+            <div>
+                <div style={{display:'flex',justifyContent:'space-between'}}>
+                    <img src={logo}/>
+                    <Button variant='outline-warning'>LOGOUT</Button>
+                </div>
+                <center><h5>Mindmaps</h5></center>
                 <Toolbar list={this.actionMenu} type="alert" location={['vertical', 'right', 'bottom']} />
                 {this.state.mindMapsAuth && <div>
                     <div style={{ display: 'flex', justifyContent: 'end' }}><Button onClick={handleSavemaps}>Save maps</Button></div>
@@ -83,7 +88,7 @@ class Home extends React.Component {
                 {!this.state.mindMapsAuth && <div>
                     <h4>You need to login to see this page</h4>
                     <Button onClick={() => router.setRoute('login')}>Please Login </Button></div>}
-            </>
+            </div>
         );
     }
 }
