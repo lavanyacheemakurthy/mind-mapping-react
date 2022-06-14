@@ -9,6 +9,17 @@ import { Button } from "react-bootstrap";
 import { FIREBASE_URL } from "../App";
 
 import logo from "../utilities/images/logo.jpg";
+let images =[
+    'https://images.pexels.com/photos/317356/pexels-photo-317356.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+    'https://images.pexels.com/photos/4977446/pexels-photo-4977446.jpeg',
+    'https://images.pexels.com/photos/8062289/pexels-photo-8062289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    'https://images.pexels.com/photos/8927650/pexels-photo-8927650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    'https://images.pexels.com/photos/5668858/pexels-photo-5668858.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    'https://images.pexels.com/photos/8297419/pexels-photo-8297419.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    'https://images.pexels.com/photos/669619/pexels-photo-669619.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    'https://images.pexels.com/photos/4907440/pexels-photo-4907440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    ]
 export const handleSavemaps = () => {
   let toSaveData = JSON.parse(window.localStorage.getItem("data"));
   fetch(FIREBASE_URL + "/data.json", {
@@ -128,13 +139,14 @@ class Home extends React.Component {
             <div className={css.list}>
               {
                 // this.state.list.map(item => (
-                repository.getList({ level: 0 }).map((item) => (
+                repository.getList({ level: 0 }).map((item,indexForImg) => (
                   <div
                     className={css.item}
                     onDoubleClick={() => this.getMap(item.id)}
                     key={item.id}
                   >
                     <Card
+                    image={images[indexForImg%10]}
                       id={item.id}
                       onClick={() => this.setSelected(item.id)}
                       isSelected={item.id === this.state.id}

@@ -2,7 +2,7 @@
     width: 100%;
     overflow: hidden;
     position: relative;
-    height: 200px;
+    height: 220px;
     cursor: pointer;
     padding: 10px;
     box-sizing: border-box;
@@ -21,13 +21,13 @@
     /* background: content-box conic-gradient(#fdad57, #fc8d77,#fc8a74); */
     /* background: content-box conic-gradient(rgb(245, 125, 235), rgb(126, 138, 245)); */
     /* color: white; */
-    background-color: grey;
+    background-color: rgb(250, 200, 105);
 }
 
 .title {
     font-size: 18px;
-    margin-bottom: 10px;
-    padding: 10px;
+    margin-bottom: 5px;
+    padding: 5px;
 }
 
 .comment {
