@@ -252,7 +252,7 @@ function Chart(props) {
       AFTER: " after ",
       VALIDATION: " check ",
       CLICK: "Click ",
-      LOADS: "loads ",
+      LOADS: "Loads ",
       ON_SUCCESS: "on success, ",
       ON_FAILURE: "on failure, ",
     };
@@ -459,7 +459,7 @@ function Chart(props) {
       AFTER: " after ",
       VALIDATION: "",
       CLICK: CUCUM_WORDS.AND + " user clicks ",
-      LOADS: " loads ",
+      LOADS: " Loads ",
       given: CUCUM_WORDS.GIVEN + "Navigate to  ",
       and: CUCUM_WORDS.AND + " on ",
       then: "Then ",
@@ -743,7 +743,7 @@ function Chart(props) {
                 })}
             </div>
 
-            <div style={{ color: "orange" }}>
+            <div style={{ color: "blue" }}>
               Animation order :
               {elements.map((x) => {
                 return (
