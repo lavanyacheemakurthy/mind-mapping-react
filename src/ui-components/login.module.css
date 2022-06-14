@@ -1,0 +1,5 @@
+.loginBg {
+    padding:10px;
+    background: rgb(252, 254, 216);
+    background: linear-gradient(180deg, rgba(252, 254, 216, 0.9981034650188201) 0%, rgba(251, 236, 202, 1) 3%, rgba(252, 203, 134, 1) 35%, rgba(254, 234, 190, 1) 49%, rgba(251, 242, 215, 1) 60%, rgba(212, 82, 24, 1) 100%);
+}
