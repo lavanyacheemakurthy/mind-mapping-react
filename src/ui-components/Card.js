@@ -8,8 +8,9 @@ function Card(props) {
     return (
         <div className={className}
             onClick={props.onClick}>
-                <img src={`https://source.unsplash.com/random/300x100?sig=${Math.random() * 1000}`} />
-           
+            {/* <img src={`https://source.unsplash.com/random/300x100?sig=${Math.random() * 1000}`} /> */}
+            <img src={props.image} width='200px' height={'125px'} />
+
             <div className={css.title}>{props.name}</div>
             <div className={css.comment}>{props.comment}</div>
         </div>
