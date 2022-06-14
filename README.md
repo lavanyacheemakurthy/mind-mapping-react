@@ -82,6 +82,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
 
-// TODO
-header in Map comp
-columns in table
