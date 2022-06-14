@@ -209,11 +209,11 @@ function Chart(props) {
   };
 
   const zoomMenu = [
-    { name: "bdd", onClick: (e) => SetBddView(true) },
-    { name: "manual", onClick: (e) => setManualView(true) },
-    { name: "zoomIn", onClick: (e) => props.onZoomIn(e) },
-    { name: "zoomOut", onClick: (e) => props.onZoomOut(e) },
-    { name: "panTool", onClick: props.onToggleMoveMode },
+    { name: "bdd", onClick: (e) => SetBddView(true),description:'Click here to view BDD Scenarios' },
+    { name: "manual", onClick: (e) => setManualView(true), description:'Click here to view manual test Scenarios' },
+    { name: "zoomIn", onClick: (e) => props.onZoomIn(e) ,description:'Click here to Zoom In'},
+    { name: "zoomOut", onClick: (e) => props.onZoomOut(e),description:'Click here to Zoom Out' },
+    { name: "panTool", onClick: props.onToggleMoveMode ,description:'Click here to drag and view'},
     {
       name: props.runAnimation ? "stop" : "play",
       onClick: (e) => props.onAnimate(),

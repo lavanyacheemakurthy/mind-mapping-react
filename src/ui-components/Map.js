@@ -8,6 +8,8 @@ import TableView from "./TableView";
 import Chart from "./Chart";
 import { v4 as uuidv4 } from "uuid";
 import { handleSavemaps } from "./Home";
+
+import logo from "../utilities/images/logo.jpg";
 export const SHAPES = {
   BIG_CIRCLE: "BIG_CIRCLE",
   RECTANGLE: "RECTANGLE",
@@ -62,7 +64,7 @@ class Map extends React.Component {
   toggleMoveMode = () => {
     const moveMode = !this.state.moveMode;
 
-    handleSavemaps()
+    handleSavemaps();
 
     this.setState({ moveMode });
   };
@@ -73,7 +75,7 @@ class Map extends React.Component {
     e.stopPropagation();
     e.preventDefault();
     const zoom = this.state.zoom * this.ZOOM_FACTOR;
-    handleSavemaps()
+    handleSavemaps();
     this.setState({ zoom });
   };
 
@@ -81,7 +83,7 @@ class Map extends React.Component {
     e.stopPropagation();
     e.preventDefault();
     const zoom = this.state.zoom / this.ZOOM_FACTOR;
-    handleSavemaps()
+    handleSavemaps();
     this.setState({ zoom });
   };
   onAnimate = () => {
@@ -169,7 +171,7 @@ class Map extends React.Component {
     inputsList[index][field] = e.target.value;
     repository.save({ ...JSON.parse(JSON.stringify(item)) });
     this.setState({ inputsList: [...inputsList] });
-    this.setState({ list: repository.getList({ rootId: this.state.rootId }) })
+    this.setState({ list: repository.getList({ rootId: this.state.rootId }) });
   };
   updateInputs = ({ pointer, op }) => {
     const item = repository.getItem(this.state.id);
@@ -185,11 +187,11 @@ class Map extends React.Component {
         inputsList.splice(pointer, 1);
       }
     }
-    item.inputsList = JSON.parse(JSON.stringify(inputsList))
+    item.inputsList = JSON.parse(JSON.stringify(inputsList));
     repository.save({ ...JSON.parse(JSON.stringify(item)) });
     // const list = repository.getList({ rootId: this.state.rootId });
     this.setState({ inputsList: [...inputsList] });
-    this.setState({ list: repository.getList({ rootId: this.state.rootId }) })
+    this.setState({ list: repository.getList({ rootId: this.state.rootId }) });
   };
 
   changeComment = (e) => {
@@ -200,8 +202,16 @@ class Map extends React.Component {
   };
 
   actionList = [
-    { name: "add", onClick: () => this.add() },
-    { name: "delete", onClick: () => this.delete() },
+    {
+      name: "add",
+      onClick: () => this.add(),
+      description: "Click here to a new node",
+    },
+    {
+      name: "delete",
+      onClick: () => this.delete(),
+      description: "Click here to delete sub tree from selected node",
+    },
   ];
   determineDefaultDisplayShape(level) {
     if (level === 1) {
@@ -297,8 +307,21 @@ class Map extends React.Component {
   };
 
   viewMenu = [
-    { name: "viewList", onClick: () => this.setState({ view: "table" }) },
-    { name: "hive", onClick: () => this.setState({ view: "chart" }) },
+    {
+      name: "home",
+      onClick: () => router.setRoute("home"),
+      description: "Click to go to Mindmaps Dashboard",
+    },
+    {
+      name: "viewList",
+      onClick: () => this.setState({ view: "table" }),
+      description: "Click to see tabular view",
+    },
+    {
+      name: "hive",
+      onClick: () => this.setState({ view: "chart" }),
+      description: "Click to see pictorial view",
+    },
   ];
 
   render() {
@@ -340,7 +363,12 @@ class Map extends React.Component {
     }
     return (
       <>
-        <h1>Map</h1>
+        <div className={css.map_header}>
+          <img  alt ='logo' src={logo} width='150px' height='40px' onClick={()=>router.setRoute('home')} style={{cursor:'pointer'}}/> 
+          <div>Single Map View
+            </div>
+        </div>
+
         <div className={css.container} ref={this.wrapper}>
           {view}
           <Toolbar
@@ -368,6 +396,7 @@ class Map extends React.Component {
           invertConditionalFlows={this.invertConditionalFlows}
           updateInputs={this.updateInputs}
           updateInputsValues={this.updateInputsValues}
+          view={this.state.view}
         />
       </>
     );
