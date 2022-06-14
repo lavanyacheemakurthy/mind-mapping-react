@@ -1,7 +1,8 @@
 .connection {
   fill: none;
   /* stroke: #1b5e20; */
-  stroke: rgb(2, 27, 252);
+  /* stroke: rgb(2, 27, 252); */
+  stroke: black;
   stroke-width: 1px;
 }
 .connection_condition_true {

@@ -1,11 +1,12 @@
-*{
-    --animationDelay : 0ms;
+* {
+    --animationDelay: 0ms;
 }
+
 .container {
-    fill: white;
+    /* fill: white; */
     fill-opacity: 0.9;
     /* stroke: #1b5e20; */
-    stroke: rgb(2, 27, 252);
+    /* stroke: rgb(2, 27, 252); */
     paint-order: stroke;
     cursor: pointer;
 }
@@ -13,6 +14,7 @@
 .text {
     font-size: 10px;
     alignment-baseline: middle;
+    color: white
 }
 
 .left {
@@ -28,7 +30,7 @@
 }
 
 .selected {
-    stroke-width: 2px;
+    stroke-width: 1.5px;
     animation: pulse infinite 1s linear;
 }
 
@@ -37,43 +39,50 @@
         stroke-width: 2px;
         stroke-opacity: 1;
     }
+
     100% {
-        stroke-width: 50px;
+        stroke-width: 35px;
         stroke-opacity: 0;
     }
 }
-.play_mode{
+
+.play_mode {
     stroke-width: 2px;
-    
+
     animation: video_effect 2s;
     animation-delay: var(--animationDelay);
 }
+
 @keyframes video_effect {
     0% {
-        stroke:green;
+        stroke: black;
         stroke-width: 2px;
         stroke-opacity: 1;
     }
-    50%{
-        stroke:green;
+
+    50% {
+        stroke: black;
         stroke-width: 20px;
         stroke-opacity: 0.5;
     }
+
     99% {
-        stroke:green;
+        stroke: black;
         stroke-width: 30px;
         stroke-opacity: 0.1;
         /* stroke: rgb(2, 27, 252); */
     }
+
     99% {
-        stroke:green;
+        stroke: black;
         stroke-width: 30px;
         stroke-opacity: 0.1;
         /* stroke: rgb(2, 27, 252); */
     }
-    100%{
+
+    100% {
         stroke-width: 30px;
         stroke-opacity: 0.01;
-        stroke: rgb(2, 27, 252);
+        stroke: null
     }
 }
