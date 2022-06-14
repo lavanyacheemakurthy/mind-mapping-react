@@ -8,6 +8,8 @@ import TableView from "./TableView";
 import Chart from "./Chart";
 import { v4 as uuidv4 } from "uuid";
 import { handleSavemaps } from "./Home";
+
+import logo from "../utilities/images/logo.jpg";
 export const SHAPES = {
   BIG_CIRCLE: "BIG_CIRCLE",
   RECTANGLE: "RECTANGLE",
@@ -306,6 +308,11 @@ class Map extends React.Component {
 
   viewMenu = [
     {
+      name: "home",
+      onClick: () => router.setRoute("home"),
+      description: "Click to go to Mindmaps Dashboard",
+    },
+    {
       name: "viewList",
       onClick: () => this.setState({ view: "table" }),
       description: "Click to see tabular view",
@@ -356,10 +363,12 @@ class Map extends React.Component {
     }
     return (
       <>
-      <div className={css.map_header}>
+        <div className={css.map_header}>
+          <img  alt ='logo' src={logo} width='150px' height='40px' onClick={()=>router.setRoute('home')} style={{cursor:'pointer'}}/> 
+          <div>Single Map View
+            </div>
+        </div>
 
-      </div>
-        <h1>Map</h1>
         <div className={css.container} ref={this.wrapper}>
           {view}
           <Toolbar
@@ -387,6 +396,7 @@ class Map extends React.Component {
           invertConditionalFlows={this.invertConditionalFlows}
           updateInputs={this.updateInputs}
           updateInputsValues={this.updateInputsValues}
+          view={this.state.view}
         />
       </>
     );

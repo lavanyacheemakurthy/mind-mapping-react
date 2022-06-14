@@ -1,7 +1,7 @@
 .container {
     position: absolute;
     right: 0;
-    top: 0;
+    top: 45px;
     width: 250px;
     bottom: 0;
     padding: 10px;

@@ -88,13 +88,29 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        <div >
-          <img src={logo} onClick={() => router.setRoute("home")} />
-          <Button variant="warning" style={{float:'right',margin:'15px'}}>LOGOUT</Button>
+        <div>
+          <img
+            alt="logo"
+            src={logo}
+            onClick={() => router.setRoute("home")}
+            style={{ cursor: "pointer" }}
+          />
+          <Button
+            variant="warning"
+            style={{ float: "right", margin: "15px" }}
+            onClick={() => {
+              window.sessionStorage.setItem("mindMapsAuth", false);
+              setTimeout(() => router.setRoute("login"), 0);
+            }}
+          >
+            LOGOUT
+          </Button>
         </div>
-        <center>
-          <h5>Mindmaps</h5>
-        </center>
+        {this.state.mindMapsAuth && (
+          <center>
+            <h5>Mindmaps</h5>
+          </center>
+        )}
         <Toolbar
           list={
             this.state.mindMapsAuth ? this.actionMenuOnAuth : this.actionMenu
@@ -132,7 +148,7 @@ class Home extends React.Component {
           </div>
         )}
         {!this.state.mindMapsAuth && (
-          <div>
+          <div style={{ padding: "20px", margin: "20px" }}>
             <h4>You need to login to see this page</h4>
             <Button onClick={() => router.setRoute("login")}>
               Please Login{" "}

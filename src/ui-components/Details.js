@@ -4,9 +4,16 @@ import Inputs from "./Inputs";
 import { SHAPES } from "./Map";
 
 function Details(props) {
+  let isTableView = props.view === "table";
   return (
     <div className={css.container}>
       <h2>Details ID{props.id}</h2>
+      {isTableView && (
+        <lable style={{ fontSize: "12px", fontStyle: "italics", color: "red" }}>
+          {" "}
+          * Switch to pictorial view to make changes in details
+        </lable>
+      )}
       <form>
         <fieldset>
           <label>ID</label>
@@ -24,6 +31,7 @@ function Details(props) {
         <fieldset>
           <label>Name</label>
           <input
+            // disabled={isTableView}
             className={css.input}
             onChange={props.onChangeName}
             value={props.name}
@@ -48,6 +56,7 @@ function Details(props) {
             aria-label="select shape"
             id="shape"
             onChange={props.onChangeShape}
+            disabled={isTableView}
             type="shape"
             value={props.displayShape}
           >
@@ -62,6 +71,7 @@ function Details(props) {
           {props.displayShape === SHAPES.RHOMBUS && (
             <div>
               <input
+                disabled={isTableView}
                 type="button"
                 name="Invert YES and NO flows"
                 value="Invert YES and NO flows"
@@ -74,6 +84,7 @@ function Details(props) {
           <fieldset>
             <label for="shape">Select Inputs</label>
             <Inputs
+              view={props.view}
               className={css.inputs_div}
               data={props.inputsList ? [...props.inputsList] : []}
               displayShape={props.displayShape}
@@ -90,6 +101,7 @@ function Details(props) {
             onChange={props.onChangeComment}
             value={props.comment}
             className={css.textarea}
+            disabled={isTableView}
           ></textarea>
         </fieldset>
       </form>

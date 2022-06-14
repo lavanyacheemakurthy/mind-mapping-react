@@ -64,6 +64,7 @@ export const Login = () => {
                     <img
                       alt="logo"
                       src={logo}
+                      style={{cursor:'pointer'}}
                       onClick={() => {
                         router.setRoute("login");
                         setshowLoginSection(false);
@@ -275,6 +276,7 @@ export const Login = () => {
                         <img
                           src={loginBottomLogo}
                           alt="loginBottomLogo"
+                          style={{cursor:'pointer'}}
                           onClick={() => {
                             window.open("https://www.accionlabs.com/");
                           }}
