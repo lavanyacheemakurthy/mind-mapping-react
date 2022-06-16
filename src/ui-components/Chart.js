@@ -134,6 +134,17 @@ function removeDelays(elements) {
     return x;
   });
 }
+function RenderManualCase(props){
+  return (
+    <div>
+      {props.case.split(',').map((x,i)=>{
+        return (<div>
+          {x}
+        </div>)
+      })}
+    </div>
+  )
+}
 function Chart(props) {
   const [bddView, SetBddView] = useState(false);
   const [manualView, setManualView] = useState(false);
@@ -759,11 +770,11 @@ function Chart(props) {
         {bddView && (
           <div>
             {/* Cucumber stuff */}
-            <Modal size="lg" show={bddView} onHide={() => SetBddView(false)}>
+            <Modal size="xl" show={bddView} onHide={() => SetBddView(false)}>
               <Modal.Header closeButton>
                 <Modal.Title>Cucumber scenarios </Modal.Title>
               </Modal.Header>
-              <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <Modal.Body style={{ maxHeight: "450px", overflowY: "auto" }}>
                 <div id="bddView">
                   <ul>
                     {determinePathsAsInCucumber(elements) &&
@@ -807,14 +818,14 @@ function Chart(props) {
           <div>
             {/* Cucumber stuff */}
             <Modal
-              size="lg"
+              size="xl"
               show={manualView}
               onHide={() => setManualView(false)}
             >
               <Modal.Header closeButton>
                 <Modal.Title>Test cases </Modal.Title>
               </Modal.Header>
-              <Modal.Body style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <Modal.Body style={{ maxHeight: "450px", overflowY: "auto" }}>
                 <div id="manualView">
                   <div>
                     <ul>
@@ -823,9 +834,13 @@ function Chart(props) {
                         determinePaths(elements).testCases.length > 0 &&
                         determinePaths(elements).testCases?.map((x, i) => {
                           return (
-                            <li type="square" style={{ color: "green" }}>
+                            <>
+                             <li type="1" style={i%2===0 ?{color:'orange',paddingBottom:'10px'}:{color:'green',paddingBottom:'10px'}}>
+                              {/* <RenderManualCase case={x}/> */}
                               {x}
                             </li>
+                            </>
+                           
                           );
                         })}
                     </ul>
